@@ -1,6 +1,18 @@
 # Todoアプリ
 
 ## インストールと実行
+`.env` ファイルを作成し、firebaseの設定を書き込んでください
+
+```
+API_KEY=xxx
+PROJECT_ID=xxx
+SENDER_ID=xxx
+APP_ID=xxx
+MEASUREMENT_ID=xxx
+```
+
+その後、以下のコマンドを実行します
+
 ```shell
 npm install
 npm run dev
@@ -8,13 +20,3 @@ npm run dev
 yarn
 yarn dev
 ```
-
-## 入っているもの
-- Next.js
-- TypeScript
-- jest
-- React Testing Library
-- prettier
-- eslint
-- material-ui
-- jotai
