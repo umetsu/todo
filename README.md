@@ -1,4 +1,4 @@
-# Next.js Template
+# Todoアプリ
 
 ## インストールと実行
 ```shell

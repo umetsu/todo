@@ -4,7 +4,7 @@ export function Header() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6">Next.js Template</Typography>
+        <Typography variant="h6">Todo</Typography>
       </Toolbar>
     </AppBar>
   )

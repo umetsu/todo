@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <AppProviders>
       <>
         <Head>
-          <title>nextjs-template</title>
+          <title>Todo</title>
         </Head>
         <Component {...pageProps} />
       </>
