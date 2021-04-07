@@ -3,9 +3,6 @@ module.exports = {
   moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
   testPathIgnorePatterns: ['<rootDir>[/\\\\](node_modules|.next)[/\\\\]'],
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'babel-jest',
-  },
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
@@ -15,4 +12,10 @@ module.exports = {
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
   },
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+  preset: 'ts-jest',
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/test/tsconfig.json',
+    },
+  },
 }
