@@ -8,6 +8,7 @@ import * as firebaseui from 'firebaseui'
 
 const uiConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
+  signInSuccessUrl: '/',
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
 }
 
