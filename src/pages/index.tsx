@@ -1,34 +1,29 @@
 import React from 'react'
-import { Container } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import { Header } from '../components/Header'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import firebase from 'firebase'
 import { useAuth } from '../hooks/useAuth'
-import * as firebaseui from 'firebaseui'
+import { UnauthorizedContent } from '../components/UnauthorizedContent'
+import { AuthorizedContent } from '../components/AuthorizedContent'
 
-const uiConfig: firebaseui.auth.Config = {
-  signInFlow: 'popup',
-  signInSuccessUrl: '/',
-  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-}
+export default function TopPage() {
+  const { uid } = useAuth()
 
-interface TopPageProps {
-  uid?: string
-}
-
-export default function TopPage({ uid }: TopPageProps) {
-  const { loggedIn, auth } = useAuth(uid)
+  const classes = useStyles()
 
   return (
-    <div>
+    <div className={classes.root}>
       <Header />
-      {loggedIn ? (
-        <Container maxWidth={'md'} style={{ padding: '16px' }}>
-          <>Hello Next.js</>
-        </Container>
-      ) : (
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-      )}
+      {uid ? <AuthorizedContent uid={uid} /> : <UnauthorizedContent />}
     </div>
   )
 }
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      // eslint-disable-next-line @typescript-eslint/prefer-as-const
+      position: 'relative' as 'relative',
+      height: '100vh',
+    },
+  })
+)
