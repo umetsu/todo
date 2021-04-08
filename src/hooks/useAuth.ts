@@ -1,14 +1,11 @@
-import { useFirebase } from './useFirebase'
 import { useEffect } from 'react'
 import { atom, useAtom } from 'jotai'
 import { subscribeUser } from '../firebase/auth'
-import { atomFamily } from 'jotai/utils'
 
-export const uidFamily = atomFamily((uid: string | null) => atom(uid))
+export const uidAtom = atom<string | null>(null)
 
-export function useAuth(currentUid: string | null = null) {
-  const { auth } = useFirebase()
-  const [uid, setUid] = useAtom(uidFamily(currentUid))
+export function useAuth() {
+  const [uid, setUid] = useAtom(uidAtom)
 
   useEffect(() => {
     const unsubscribe = subscribeUser((user) => {
@@ -22,8 +19,6 @@ export function useAuth(currentUid: string | null = null) {
   }, [])
 
   return {
-    auth,
-    loggedIn: uid !== null,
     uid,
   }
 }

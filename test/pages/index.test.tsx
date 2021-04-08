@@ -1,30 +1,64 @@
 import React from 'react'
-import { render, screen } from '../testUtils'
+import { render, screen, waitForElementToBeRemoved } from '../testUtils'
 import TopPage from '../../src/pages'
-import { subscribeUser } from '../../src/firebase/auth'
 import { mocked } from 'ts-jest/utils'
-import firebase from 'firebase'
+import { createTask, subscribeAllTasks } from '../../src/firebase/database'
+import userEvent from '@testing-library/user-event'
+import { useAuth } from '../../src/hooks/useAuth'
 
 jest.mock('../../src/firebase/auth')
-const mockedSubscribeUser = mocked(subscribeUser)
+jest.mock('../../src/firebase/database')
+const mockedSubscribeAllTasks = mocked(subscribeAllTasks)
+const mockedCreateTask = mocked(createTask)
+
+jest.mock('../../src/hooks/useAuth')
+const mockedUseAuth = mocked(useAuth)
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
-test('トップページのレンダリング', () => {
+function renderTopPage(uid = '123') {
+  mockedUseAuth.mockReturnValue({
+    uid,
+  })
+
+  mockedSubscribeAllTasks.mockImplementation((_, onTasksChange) => {
+    onTasksChange({
+      0: { name: 'task1', completed: false, createdAt: 1 },
+      1: { name: 'task2', completed: false, createdAt: 2 },
+      2: { name: 'task3', completed: false, createdAt: 3 },
+    })
+  })
+
+  render(<TopPage />)
+}
+
+test('トップページの描画', async () => {
+  renderTopPage()
+
+  expect(mockedSubscribeAllTasks).toBeCalledTimes(1)
+
+  expect(await screen.findByText(/todo/i)).toBeInTheDocument()
+  expect(await screen.findAllByLabelText(/task-item/i)).toHaveLength(3)
+})
+
+test('タスクの追加', async () => {
   const uid = '123'
-  mockedSubscribeUser.mockImplementation(
-    (onUserChange: (user: firebase.User | null) => void) => {
-      onUserChange({ uid } as any) // ひとまずuidだけがほしい
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return function unsubscribe() {}
-    }
-  )
+  const newTaskName = 'new task'
 
-  render(<TopPage uid={uid} />)
+  mockedCreateTask.mockReturnValue(Promise.resolve())
 
-  expect(mockedSubscribeUser).toBeCalledTimes(1)
+  renderTopPage(uid)
 
-  expect(screen.getByText(/hello next.js/i)).toBeInTheDocument()
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+
+  userEvent.click(await screen.findByLabelText('create-task'))
+  userEvent.type(await screen.findByRole('textbox'), newTaskName)
+  userEvent.click(await screen.findByRole('button', { name: '追加' }))
+
+  expect(mockedCreateTask).toBeCalledTimes(1)
+  expect(mockedCreateTask).toHaveBeenCalledWith(uid, newTaskName)
+
+  await waitForElementToBeRemoved(() => screen.queryByRole('textbox'))
 })
