@@ -7,28 +7,24 @@ interface Task {
 }
 
 export function subscribeAllTasks(
+  uid: string,
   onTasksChange: (tasks: { [key: string]: Task }) => void
 ) {
   firebase
     .database()
-    // TODO: pathにuid追加
-    .ref('tasks/')
+    .ref(`tasks/${uid}`)
     .orderByChild('createdAt')
     .on('value', (snapshot) => {
       onTasksChange(snapshot.val() ?? {})
     })
 }
 
-export function unsubscribeAllTasks() {
-  firebase
-    .database()
-    // TODO: pathにuid追加
-    .ref('tasks/')
-    .off()
+export function unsubscribeAllTasks(uid: string) {
+  firebase.database().ref(`tasks/${uid}`).off()
 }
 
-export async function createTask(taskName: string) {
-  await firebase.database().ref('tasks/').push({
+export async function createTask(uid: string, taskName: string) {
+  await firebase.database().ref(`tasks/${uid}`).push({
     name: taskName,
     completed: false,
     createdAt: firebase.database.ServerValue.TIMESTAMP,
