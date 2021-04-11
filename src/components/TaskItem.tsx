@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListItem } from '@material-ui/core'
-import { Task } from '../state'
+import { Task } from '../model'
 
 interface TaskItemProps {
   task: Task
