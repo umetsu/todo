@@ -20,6 +20,8 @@ beforeEach(() => {
 
 function renderTopPage(uid = '123') {
   mockedUseAuth.mockReturnValue({
+    loading: false,
+    error: null,
     uid,
   })
 

@@ -2,15 +2,41 @@ import { useEffect } from 'react'
 import { atom, useAtom } from 'jotai'
 import { subscribeUser } from '../firebase/auth'
 
-export const uidAtom = atom<string | null>(null)
+const uidAtom = atom<{
+  loading: boolean
+  error: Error | null
+  uid: string | null
+}>({
+  loading: false,
+  error: null,
+  uid: null,
+})
 
 export function useAuth() {
-  const [uid, setUid] = useAtom(uidAtom)
+  const [state, setState] = useAtom(uidAtom)
 
   useEffect(() => {
-    const unsubscribe = subscribeUser((user) => {
-      setUid(user?.uid ?? null)
+    setState({
+      loading: true,
+      error: null,
+      uid: null,
     })
+    const unsubscribe = subscribeUser(
+      (user) => {
+        setState({
+          loading: false,
+          error: null,
+          uid: user?.uid ?? null,
+        })
+      },
+      (error) => {
+        setState({
+          loading: false,
+          error: new Error(error.message),
+          uid: null,
+        })
+      }
+    )
 
     return () => {
       unsubscribe()
@@ -19,6 +45,8 @@ export function useAuth() {
   }, [])
 
   return {
-    uid,
+    loading: state.loading,
+    error: state.error,
+    uid: state.uid,
   }
 }
