@@ -1,7 +1,9 @@
 import firebase from 'firebase'
 import { Task } from '../model'
 
-export async function fetchAllTasks(uid: string): Promise<Task[]> {
+export async function fetchAllTasks(
+  uid: string
+): Promise<{ [key: string]: Task }> {
   // https://firebase.google.com/docs/database/web/read-and-write?hl=ja#read_data_once
   // 場合によってはget関数は効率が悪いようだが、今回はリクエスト数も多くなく、何よりこの関数自体をasync関数として定義できる方が色々とやりやすいので使うことにした
   const snapshot = await firebase
@@ -9,10 +11,12 @@ export async function fetchAllTasks(uid: string): Promise<Task[]> {
     .ref(`tasks/${uid}`)
     .orderByKey()
     .get()
-  const val = (snapshot.val() ?? {}) as {
+  const v = (snapshot.val() ?? {}) as {
     [key: string]: { name: string; completed: boolean }
   }
-  return Object.entries(val).flatMap(([k, v]) => ({ id: k, ...v } as Task))
+  return Object.fromEntries(
+    Object.entries(v).map(([k, v]) => [k, { id: k, ...v }])
+  )
 }
 
 export async function createTask(uid: string, taskName: string): Promise<Task> {

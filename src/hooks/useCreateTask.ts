@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react'
 import { createTask as requestCreateTask } from '../firebase/database'
 import { useUpdateAtom } from 'jotai/utils'
-import { tasksAtom } from './useTasks'
+import { taskMapAtom } from './atoms'
 
 export function useCreateTask(uid: string) {
-  const setTasks = useUpdateAtom(tasksAtom)
+  const setTaskMap = useUpdateAtom(taskMapAtom)
   const [createTaskFormOpened, setCreateTaskFormOpened] = useState(false)
   const [inputTaskName, setInputTaskName] = useState('')
 
@@ -27,11 +27,11 @@ export function useCreateTask(uid: string) {
 
     // TODO: エラー処理
     const newTask = await requestCreateTask(uid, inputTaskName)
-    setTasks((tasks) => [newTask, ...tasks])
+    setTaskMap((taskMap) => ({ ...taskMap, [newTask.id]: newTask }))
 
     setInputTaskName('')
     setCreateTaskFormOpened(false)
-  }, [inputTaskName, setTasks, uid])
+  }, [inputTaskName, setTaskMap, uid])
 
   return {
     createTaskFormOpened,

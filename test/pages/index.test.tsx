@@ -26,11 +26,11 @@ function renderTopPage(uid = '123') {
   })
 
   mockedFetchAllTasks.mockReturnValue(
-    Promise.resolve([
-      { id: '1', name: 'task1', completed: false },
-      { id: '2', name: 'task2', completed: false },
-      { id: '3', name: 'task3', completed: false },
-    ])
+    Promise.resolve({
+      '1': { id: '1', name: 'task1', completed: false },
+      '2': { id: '2', name: 'task2', completed: false },
+      '3': { id: '3', name: 'task3', completed: false },
+    })
   )
 
   render(<TopPage />)
