@@ -2,13 +2,13 @@ import React from 'react'
 import { render, screen, waitForElementToBeRemoved } from '../testUtils'
 import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
-import { createTask, subscribeAllTasks } from '../../src/firebase/database'
+import { createTask, fetchAllTasks } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
 import { useAuth } from '../../src/hooks/useAuth'
 
 jest.mock('../../src/firebase/auth')
 jest.mock('../../src/firebase/database')
-const mockedSubscribeAllTasks = mocked(subscribeAllTasks)
+const mockedFetchAllTasks = mocked(fetchAllTasks)
 const mockedCreateTask = mocked(createTask)
 
 jest.mock('../../src/hooks/useAuth')
@@ -23,13 +23,13 @@ function renderTopPage(uid = '123') {
     uid,
   })
 
-  mockedSubscribeAllTasks.mockImplementation((_, onTasksChange) => {
-    onTasksChange({
-      0: { name: 'task1', completed: false, createdAt: 1 },
-      1: { name: 'task2', completed: false, createdAt: 2 },
-      2: { name: 'task3', completed: false, createdAt: 3 },
-    })
-  })
+  mockedFetchAllTasks.mockReturnValue(
+    Promise.resolve([
+      { id: '1', name: 'task1', completed: false },
+      { id: '2', name: 'task2', completed: false },
+      { id: '3', name: 'task3', completed: false },
+    ])
+  )
 
   render(<TopPage />)
 }
@@ -37,7 +37,7 @@ function renderTopPage(uid = '123') {
 test('トップページの描画', async () => {
   renderTopPage()
 
-  expect(mockedSubscribeAllTasks).toBeCalledTimes(1)
+  expect(mockedFetchAllTasks).toBeCalledTimes(1)
 
   expect(await screen.findByText(/todo/i)).toBeInTheDocument()
   expect(await screen.findAllByLabelText(/task-item/i)).toHaveLength(3)
@@ -47,7 +47,9 @@ test('タスクの追加', async () => {
   const uid = '123'
   const newTaskName = 'new task'
 
-  mockedCreateTask.mockReturnValue(Promise.resolve())
+  mockedCreateTask.mockReturnValue(
+    Promise.resolve({ id: 'test-id', name: newTaskName, completed: false })
+  )
 
   renderTopPage(uid)
 

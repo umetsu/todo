@@ -1,21 +1,19 @@
-import { useEffect, useState } from 'react'
-import { Task } from '../state'
-import { subscribeAllTasks, unsubscribeAllTasks } from '../firebase/database'
+import { useEffect } from 'react'
+import { Task } from '../model'
+import { fetchAllTasks } from '../firebase/database'
+import { atom, useAtom } from 'jotai'
+
+export const tasksAtom = atom<ReadonlyArray<Task>>([])
 
 export function useTasks(uid: string) {
-  const [tasks, setTasks] = useState<ReadonlyArray<Task>>([])
+  const [tasks, setTasks] = useAtom(tasksAtom)
 
   useEffect(() => {
-    subscribeAllTasks(uid, (tasks) => {
-      setTasks(
-        Object.entries(tasks)
-          .flatMap(([k, v]) => ({ id: k, ...v }))
-          .reverse()
-      )
-    })
-    return () => {
-      unsubscribeAllTasks(uid)
-    }
+    ;(async () => {
+      // TODO: エラー処理
+      const tasks = await fetchAllTasks(uid)
+      setTasks(tasks.reverse())
+    })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -1,7 +1,7 @@
 import { List } from '@material-ui/core'
 import React from 'react'
 import { TaskItem } from './TaskItem'
-import { Task } from '../state'
+import { Task } from '../model'
 
 interface TaskListProps {
   tasks: ReadonlyArray<Task>
