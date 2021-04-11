@@ -4,16 +4,23 @@ import { Header } from '../components/Header'
 import { useAuth } from '../hooks/useAuth'
 import { UnauthorizedContent } from '../components/UnauthorizedContent'
 import { AuthorizedContent } from '../components/AuthorizedContent'
+import { FullPageSpinner } from '../components/FullPageSpinner'
 
 export default function TopPage() {
-  const { uid } = useAuth()
+  const { loading, uid } = useAuth()
 
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <Header />
-      {uid ? <AuthorizedContent uid={uid} /> : <UnauthorizedContent />}
+      {loading ? (
+        <FullPageSpinner />
+      ) : uid ? (
+        <AuthorizedContent uid={uid} />
+      ) : (
+        <UnauthorizedContent />
+      )}
     </div>
   )
 }
