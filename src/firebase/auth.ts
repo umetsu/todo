@@ -8,3 +8,7 @@ export function subscribeUser(
     onUserChange(user)
   }, onError)
 }
+
+export async function logout() {
+  await firebase.auth().signOut()
+}

@@ -7,13 +7,13 @@ import { AuthorizedContent } from '../components/AuthorizedContent'
 import { FullPageSpinner } from '../components/FullPageSpinner'
 
 export default function TopPage() {
-  const { loading, loggedIn } = useAuth()
-
   const classes = useStyles()
+
+  const { loading, loggedIn, logout } = useAuth()
 
   return (
     <div className={classes.root}>
-      <Header />
+      <Header loggedIn={loggedIn} onLogoutClick={logout} />
       {loading ? (
         <FullPageSpinner />
       ) : loggedIn ? (
