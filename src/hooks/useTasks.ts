@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 import { fetchAllTasks } from '../firebase/database'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { taskMapAtom, tasksAtom } from './atoms'
+import { useUid } from './useUid'
 
-export function useTasks(uid: string) {
+export function useTasks() {
+  const { uid } = useUid()
   const setTaskMap = useUpdateAtom(taskMapAtom)
   const tasks = useAtomValue(tasksAtom)
 

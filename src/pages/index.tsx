@@ -7,7 +7,7 @@ import { AuthorizedContent } from '../components/AuthorizedContent'
 import { FullPageSpinner } from '../components/FullPageSpinner'
 
 export default function TopPage() {
-  const { loading, uid } = useAuth()
+  const { loading, loggedIn } = useAuth()
 
   const classes = useStyles()
 
@@ -16,8 +16,8 @@ export default function TopPage() {
       <Header />
       {loading ? (
         <FullPageSpinner />
-      ) : uid ? (
-        <AuthorizedContent uid={uid} />
+      ) : loggedIn ? (
+        <AuthorizedContent />
       ) : (
         <UnauthorizedContent />
       )}

@@ -4,33 +4,53 @@ import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
 import { createTask, fetchAllTasks } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
-import { useAuth } from '../../src/hooks/useAuth'
+import { Task } from '../../src/model'
+import firebase from 'firebase'
+import { subscribeUser } from '../../src/firebase/auth'
 
 jest.mock('../../src/firebase/auth')
+const mockedSubscribeUser = mocked(subscribeUser)
+
 jest.mock('../../src/firebase/database')
 const mockedFetchAllTasks = mocked(fetchAllTasks)
 const mockedCreateTask = mocked(createTask)
-
-jest.mock('../../src/hooks/useAuth')
-const mockedUseAuth = mocked(useAuth)
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
-function renderTopPage(uid = '123') {
-  mockedUseAuth.mockReturnValue({
-    loading: false,
-    error: null,
-    uid,
-  })
+interface RenderOptions {
+  uid?: string
+  tasks?: ReadonlyArray<Task>
+}
+
+const defaultOptions: Required<RenderOptions> = {
+  uid: '123',
+  tasks: [
+    { id: '1', name: 'task1', completed: false },
+    { id: '2', name: 'task2', completed: false },
+    { id: '3', name: 'task3', completed: false },
+  ],
+}
+
+function renderTopPage(options: RenderOptions = defaultOptions) {
+  // undefを許容しないように型変換
+  const { uid = defaultOptions.uid, tasks = defaultOptions.tasks } = options
+
+  mockedSubscribeUser.mockImplementation(
+    (onUserChange: (user: firebase.User | null) => void) => {
+      onUserChange({ uid } as any) // ひとまずuidだけがほしい
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return function unsubscribe() {}
+    }
+  )
 
   mockedFetchAllTasks.mockReturnValue(
-    Promise.resolve({
-      '1': { id: '1', name: 'task1', completed: false },
-      '2': { id: '2', name: 'task2', completed: false },
-      '3': { id: '3', name: 'task3', completed: false },
-    })
+    Promise.resolve(
+      Object.fromEntries(
+        tasks.map<[string, Task]>((t) => [t.id, t])
+      )
+    )
   )
 
   render(<TopPage />)
@@ -53,7 +73,7 @@ test('タスクの追加', async () => {
     Promise.resolve({ id: 'test-id', name: newTaskName, completed: false })
   )
 
-  renderTopPage(uid)
+  renderTopPage({ uid })
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 

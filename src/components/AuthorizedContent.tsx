@@ -14,13 +14,9 @@ import AddIcon from '@material-ui/icons/Add'
 import { useTasks } from '../hooks/useTasks'
 import { useCreateTask } from '../hooks/useCreateTask'
 
-interface AuthorizedContentProps {
-  uid: string
-}
-
-export function AuthorizedContent({ uid }: AuthorizedContentProps) {
+export function AuthorizedContent() {
   const classes = useStyles()
-  const { tasks } = useTasks(uid)
+  const { tasks } = useTasks()
   const {
     createTaskFormOpened,
     inputTaskName,
@@ -28,7 +24,7 @@ export function AuthorizedContent({ uid }: AuthorizedContentProps) {
     closeCreateTaskForm,
     changeInputTaskName,
     createTask,
-  } = useCreateTask(uid)
+  } = useCreateTask()
 
   const handleTaskNameChange = useCallback(
     (event) => {

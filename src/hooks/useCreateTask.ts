@@ -2,8 +2,10 @@ import { useCallback, useState } from 'react'
 import { createTask as requestCreateTask } from '../firebase/database'
 import { useUpdateAtom } from 'jotai/utils'
 import { taskMapAtom } from './atoms'
+import { useUid } from './useUid'
 
-export function useCreateTask(uid: string) {
+export function useCreateTask() {
+  const { uid } = useUid()
   const setTaskMap = useUpdateAtom(taskMapAtom)
   const [createTaskFormOpened, setCreateTaskFormOpened] = useState(false)
   const [inputTaskName, setInputTaskName] = useState('')
