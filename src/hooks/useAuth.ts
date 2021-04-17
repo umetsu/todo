@@ -1,13 +1,9 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAtom } from 'jotai'
-import { subscribeUser } from '../firebase/auth'
+import { subscribeUser, logout as requestLogout } from '../firebase/auth'
 import { authAtom } from './atoms'
 
-export function useAuth(): {
-  loggedIn: boolean
-  loading: boolean
-  error: Error | null
-} {
+export function useAuth() {
   const [state, setState] = useAtom(authAtom)
 
   useEffect(() => {
@@ -34,9 +30,14 @@ export function useAuth(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const logout = useCallback(async () => {
+    await requestLogout()
+  }, [])
+
   return {
     loading: state.loading,
     error: state.error,
     loggedIn: state.uid !== null,
+    logout,
   }
 }
