@@ -12,19 +12,18 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { useTasks } from '../hooks/useTasks'
-import { useCreateTask } from '../hooks/useCreateTask'
+import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
 
 export function AuthorizedContent() {
   const classes = useStyles()
-  const { tasks } = useTasks()
+  const { tasks, createTask } = useTasks()
   const {
     createTaskFormOpened,
     inputTaskName,
     openCreateTaskForm,
     closeCreateTaskForm,
     changeInputTaskName,
-    createTask,
-  } = useCreateTask()
+  } = useCreateTaskForm()
 
   const handleTaskNameChange = useCallback(
     (event) => {
@@ -32,6 +31,11 @@ export function AuthorizedContent() {
     },
     [changeInputTaskName]
   )
+
+  const handleAddButtonClick = useCallback(async () => {
+    await createTask(inputTaskName)
+    closeCreateTaskForm()
+  }, [closeCreateTaskForm, createTask, inputTaskName])
 
   return (
     <Container maxWidth={'md'} style={{ padding: '16px' }}>
@@ -60,7 +64,7 @@ export function AuthorizedContent() {
           <Button
             color={'primary'}
             disabled={!inputTaskName}
-            onClick={createTask}
+            onClick={handleAddButtonClick}
             className={classes.createTaskButton}
           >
             追加
