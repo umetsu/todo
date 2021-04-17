@@ -1,5 +1,8 @@
-import { useEffect } from 'react'
-import { fetchAllTasks } from '../firebase/database'
+import { useCallback, useEffect } from 'react'
+import {
+  createTask as requestCreateTask,
+  fetchAllTasks,
+} from '../firebase/database'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { taskMapAtom, tasksAtom } from './atoms'
 import { useUid } from './useUid'
@@ -18,7 +21,21 @@ export function useTasks() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const createTask = useCallback(
+    async (inputTaskName) => {
+      if (!inputTaskName) {
+        return
+      }
+
+      // TODO: エラー処理
+      const newTask = await requestCreateTask(uid, inputTaskName)
+      setTaskMap((taskMap) => ({ ...taskMap, [newTask.id]: newTask }))
+    },
+    [setTaskMap, uid]
+  )
+
   return {
     tasks,
+    createTask,
   }
 }
