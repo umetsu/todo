@@ -1,26 +1,16 @@
 import { useEffect } from 'react'
-import { atom, useAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import { subscribeUser } from '../firebase/auth'
+import { authAtom } from './atoms'
 
-const uidAtom = atom<{
+export function useAuth(): {
+  loggedIn: boolean
   loading: boolean
   error: Error | null
-  uid: string | null
-}>({
-  loading: false,
-  error: null,
-  uid: null,
-})
-
-export function useAuth() {
-  const [state, setState] = useAtom(uidAtom)
+} {
+  const [state, setState] = useAtom(authAtom)
 
   useEffect(() => {
-    setState({
-      loading: true,
-      error: null,
-      uid: null,
-    })
     const unsubscribe = subscribeUser(
       (user) => {
         setState({
@@ -47,6 +37,6 @@ export function useAuth() {
   return {
     loading: state.loading,
     error: state.error,
-    uid: state.uid,
+    loggedIn: state.uid !== null,
   }
 }
