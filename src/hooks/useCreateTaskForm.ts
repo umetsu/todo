@@ -1,25 +1,36 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
+import { atom, useAtom } from 'jotai'
+
+const formAtom = atom({
+  createTaskFormOpened: false,
+  inputTaskName: '',
+})
 
 export function useCreateTaskForm() {
-  const [createTaskFormOpened, setCreateTaskFormOpened] = useState(false)
-  const [inputTaskName, setInputTaskName] = useState('')
+  const [state, setState] = useAtom(formAtom)
 
   const openCreateTaskForm = useCallback(() => {
-    setCreateTaskFormOpened(true)
-  }, [])
+    setState((state) => ({ ...state, createTaskFormOpened: true }))
+  }, [setState])
 
   const closeCreateTaskForm = useCallback(() => {
-    setCreateTaskFormOpened(false)
-    setInputTaskName('')
-  }, [])
+    setState((state) => ({
+      ...state,
+      createTaskFormOpened: false,
+      inputTaskName: '',
+    }))
+  }, [setState])
 
-  const changeInputTaskName = useCallback((input: string) => {
-    setInputTaskName(input)
-  }, [])
+  const changeInputTaskName = useCallback(
+    (input: string) => {
+      setState((state) => ({ ...state, inputTaskName: input }))
+    },
+    [setState]
+  )
 
   return {
-    createTaskFormOpened,
-    inputTaskName,
+    createTaskFormOpened: state.createTaskFormOpened,
+    inputTaskName: state.inputTaskName,
     openCreateTaskForm,
     closeCreateTaskForm,
     changeInputTaskName,

@@ -1,38 +1,27 @@
 import React, { useCallback } from 'react'
 import { TaskList } from './TaskList'
 import {
-  Button,
   Container,
   createStyles,
-  Drawer,
   Fab,
-  InputBase,
   makeStyles,
   Theme,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import { useTasks } from '../hooks/useTasks'
 import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
+import { TaskCreateForm } from './TaskCreateForm'
 
 export function AuthorizedContent() {
   const classes = useStyles()
   const { tasks, createTask } = useTasks()
   const {
-    createTaskFormOpened,
     inputTaskName,
     openCreateTaskForm,
     closeCreateTaskForm,
-    changeInputTaskName,
   } = useCreateTaskForm()
 
-  const handleTaskNameChange = useCallback(
-    (event) => {
-      changeInputTaskName(event.target.value)
-    },
-    [changeInputTaskName]
-  )
-
-  const handleAddButtonClick = useCallback(async () => {
+  const handleCreateButtonClick = useCallback(async () => {
     await createTask(inputTaskName)
     closeCreateTaskForm()
   }, [closeCreateTaskForm, createTask, inputTaskName])
@@ -48,29 +37,7 @@ export function AuthorizedContent() {
       >
         <AddIcon />
       </Fab>
-      <Drawer
-        anchor={'bottom'}
-        open={createTaskFormOpened}
-        onClose={closeCreateTaskForm}
-      >
-        <div className={classes.drawer}>
-          <InputBase
-            placeholder={'やること'}
-            autoFocus
-            value={inputTaskName}
-            onChange={handleTaskNameChange}
-            className={classes.createTaskInput}
-          />
-          <Button
-            color={'primary'}
-            disabled={!inputTaskName}
-            onClick={handleAddButtonClick}
-            className={classes.createTaskButton}
-          >
-            追加
-          </Button>
-        </div>
-      </Drawer>
+      <TaskCreateForm onCreateButtonClick={handleCreateButtonClick} />
     </Container>
   )
 }
@@ -82,16 +49,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute' as 'absolute',
       bottom: theme.spacing(2),
       right: theme.spacing(2),
-    },
-    drawer: {
-      display: 'flex',
-    },
-    createTaskInput: {
-      padding: theme.spacing(2),
-      flex: 1,
-    },
-    createTaskButton: {
-      flex: 0,
     },
   })
 )
