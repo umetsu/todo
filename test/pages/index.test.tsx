@@ -2,7 +2,11 @@ import React from 'react'
 import { render, screen, waitForElementToBeRemoved } from '../testUtils'
 import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
-import { createTask, fetchAllTasks } from '../../src/firebase/database'
+import {
+  updateTask,
+  createTask,
+  fetchAllTasks,
+} from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
 import { Task } from '../../src/model'
 import firebase from 'firebase'
@@ -14,6 +18,7 @@ const mockedSubscribeUser = mocked(subscribeUser)
 jest.mock('../../src/firebase/database')
 const mockedFetchAllTasks = mocked(fetchAllTasks)
 const mockedCreateTask = mocked(createTask)
+const mockedUpdateTask = mocked(updateTask)
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -85,4 +90,27 @@ test('タスクの追加', async () => {
   expect(mockedCreateTask).toHaveBeenCalledWith(uid, newTaskName)
 
   await waitForElementToBeRemoved(() => screen.queryByRole('textbox'))
+})
+
+test('完了状態の切り替え', async () => {
+  const uid = '456'
+  const task = { id: '1', name: 'task1', completed: false }
+
+  mockedUpdateTask.mockReturnValue(
+    Promise.resolve({
+      ...task,
+      completed: true,
+    })
+  )
+
+  renderTopPage({ uid, tasks: [task] })
+
+  expect(await screen.findByRole('checkbox')).not.toBeChecked()
+
+  userEvent.click(await screen.findByRole('checkbox'))
+
+  expect(mockedUpdateTask).toBeCalledTimes(1)
+  expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, completed: true })
+
+  expect(await screen.findByRole('checkbox')).toBeChecked()
 })

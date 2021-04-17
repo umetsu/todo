@@ -32,3 +32,12 @@ export async function createTask(uid: string, taskName: string): Promise<Task> {
     ...newTask,
   }
 }
+
+export async function updateTask(uid: string, task: Task): Promise<Task> {
+  await firebase.database().ref(`tasks/${uid}/${task.id}`).update({
+    name: task.name,
+    completed: task.completed,
+  })
+
+  return task
+}
