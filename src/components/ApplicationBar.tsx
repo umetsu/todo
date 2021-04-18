@@ -1,22 +1,25 @@
 import {
   AppBar,
+  Fab,
   IconButton,
   makeStyles,
   Menu,
   MenuItem,
   Toolbar,
-  Typography,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
-import React, { useState, MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback, useState } from 'react'
+import AddIcon from '@material-ui/icons/Add'
+import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
 
 interface HeaderProps {
-  loggedIn: boolean
   onLogoutClick: () => void
 }
 
-export function Header({ loggedIn, onLogoutClick }: HeaderProps) {
+export function ApplicationBar({ onLogoutClick }: HeaderProps) {
   const classes = useStyles()
+
+  const { openCreateTaskForm } = useCreateTaskForm()
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null)
 
@@ -38,20 +41,24 @@ export function Header({ loggedIn, onLogoutClick }: HeaderProps) {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Todo
-          </Typography>
-          {loggedIn && (
-            <IconButton
-              edge="end"
-              color="inherit"
-              onClick={handleMoreActionClick}
-            >
-              <MoreIcon />
-            </IconButton>
-          )}
+          <div className={classes.space} />
+          <Fab
+            color="primary"
+            aria-label="create-task"
+            onClick={openCreateTaskForm}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Fab>
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleMoreActionClick}
+          >
+            <MoreIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Menu
@@ -67,7 +74,20 @@ export function Header({ loggedIn, onLogoutClick }: HeaderProps) {
 }
 
 const useStyles = makeStyles(() => ({
-  title: {
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  },
+  fab: {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
+    position: 'absolute' as 'absolute',
+    zIndex: 1,
+    top: '-30px',
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  },
+  space: {
     flexGrow: 1,
   },
 }))
