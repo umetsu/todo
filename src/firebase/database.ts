@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from './'
 import { Task } from '../model'
 
 export async function fetchAllTasks(
