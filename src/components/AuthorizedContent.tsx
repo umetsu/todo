@@ -44,9 +44,10 @@ export function AuthorizedContent({ logout }: AuthorizedContentProps) {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     box: {
-      height: '100vh',
+      height: '100%',
     },
     container: {
+      height: '100%',
       flex: 1,
       overflow: 'scroll',
       padding: theme.spacing(2),
