@@ -45,7 +45,7 @@ export function ApplicationBar({ onLogoutClick }: HeaderProps) {
         <Toolbar>
           <div className={classes.space} />
           <Fab
-            color="primary"
+            color="secondary"
             aria-label="create-task"
             onClick={openCreateTaskForm}
             className={classes.fab}
