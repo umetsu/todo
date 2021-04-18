@@ -34,7 +34,7 @@ export function AuthorizedContent({ logout }: AuthorizedContentProps) {
           Todo
         </Typography>
         <TaskList tasks={tasks} />
-        <TaskCreateForm onCreateButtonClick={handleCreateButtonClick} />
+        <TaskCreateForm onCreateTask={handleCreateButtonClick} />
       </Container>
       <ApplicationBar onLogoutClick={logout} />
     </Box>
