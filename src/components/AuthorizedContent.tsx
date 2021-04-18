@@ -1,25 +1,26 @@
 import React, { useCallback } from 'react'
 import { TaskList } from './TaskList'
 import {
+  Box,
   Container,
   createStyles,
-  Fab,
   makeStyles,
   Theme,
+  Typography,
 } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
 import { useTasks } from '../hooks/useTasks'
 import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
 import { TaskCreateForm } from './TaskCreateForm'
+import { ApplicationBar } from './ApplicationBar'
 
-export function AuthorizedContent() {
+interface AuthorizedContentProps {
+  logout: () => Promise<void>
+}
+
+export function AuthorizedContent({ logout }: AuthorizedContentProps) {
   const classes = useStyles()
   const { tasks, createTask } = useTasks()
-  const {
-    inputTaskName,
-    openCreateTaskForm,
-    closeCreateTaskForm,
-  } = useCreateTaskForm()
+  const { inputTaskName, closeCreateTaskForm } = useCreateTaskForm()
 
   const handleCreateButtonClick = useCallback(async () => {
     await createTask(inputTaskName)
@@ -27,28 +28,28 @@ export function AuthorizedContent() {
   }, [closeCreateTaskForm, createTask, inputTaskName])
 
   return (
-    <Container maxWidth={'md'} style={{ padding: '16px' }}>
-      <TaskList tasks={tasks} />
-      <Fab
-        color="primary"
-        aria-label="create-task"
-        onClick={openCreateTaskForm}
-        className={classes.fab}
-      >
-        <AddIcon />
-      </Fab>
-      <TaskCreateForm onCreateButtonClick={handleCreateButtonClick} />
-    </Container>
+    <Box display={'flex'} flexDirection={'column'} className={classes.box}>
+      <Container maxWidth={'md'} className={classes.container}>
+        <Typography variant={'h6'} noWrap>
+          Todo
+        </Typography>
+        <TaskList tasks={tasks} />
+        <TaskCreateForm onCreateTask={handleCreateButtonClick} />
+      </Container>
+      <ApplicationBar onLogoutClick={logout} />
+    </Box>
   )
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    fab: {
-      // eslint-disable-next-line @typescript-eslint/prefer-as-const
-      position: 'absolute' as 'absolute',
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+    box: {
+      height: '100vh',
+    },
+    container: {
+      flex: 1,
+      overflow: 'scroll',
+      padding: theme.spacing(2),
     },
   })
 )

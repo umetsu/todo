@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { FormEvent, useCallback } from 'react'
 import {
   Button,
   createStyles,
@@ -10,10 +10,10 @@ import {
 import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
 
 interface TaskCreateFormProps {
-  onCreateButtonClick: () => void
+  onCreateTask: () => void
 }
 
-export function TaskCreateForm({ onCreateButtonClick }: TaskCreateFormProps) {
+export function TaskCreateForm({ onCreateTask }: TaskCreateFormProps) {
   const classes = useStyles()
   const {
     createTaskFormOpened,
@@ -29,36 +29,46 @@ export function TaskCreateForm({ onCreateButtonClick }: TaskCreateFormProps) {
     [changeInputTaskName]
   )
 
+  const handleSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      onCreateTask()
+    },
+    [onCreateTask]
+  )
+
   return (
     <Drawer
       anchor={'bottom'}
       open={createTaskFormOpened}
       onClose={closeCreateTaskForm}
     >
-      <div className={classes.drawer}>
-        <InputBase
-          placeholder={'やること'}
-          autoFocus
-          value={inputTaskName}
-          onChange={handleTaskNameChange}
-          className={classes.createTaskInput}
-        />
-        <Button
-          color={'primary'}
-          disabled={!inputTaskName}
-          onClick={onCreateButtonClick}
-          className={classes.createTaskButton}
-        >
-          追加
-        </Button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className={classes.container}>
+          <InputBase
+            placeholder={'やること'}
+            autoFocus
+            value={inputTaskName}
+            onChange={handleTaskNameChange}
+            className={classes.createTaskInput}
+          />
+          <Button
+            color={'primary'}
+            disabled={!inputTaskName}
+            className={classes.createTaskButton}
+            type={'submit'}
+          >
+            追加
+          </Button>
+        </div>
+      </form>
     </Drawer>
   )
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    drawer: {
+    container: {
       display: 'flex',
     },
     createTaskInput: {
