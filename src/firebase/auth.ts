@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from './'
 
 export function subscribeUser(
   onUserChange: (user: firebase.User | null) => void,
