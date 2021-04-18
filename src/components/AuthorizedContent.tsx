@@ -30,7 +30,7 @@ export function AuthorizedContent({ logout }: AuthorizedContentProps) {
   return (
     <Box display={'flex'} flexDirection={'column'} className={classes.box}>
       <Container maxWidth={'md'} className={classes.container}>
-        <Typography variant="h6" noWrap>
+        <Typography variant={'h6'} noWrap>
           Todo
         </Typography>
         <TaskList tasks={tasks} />

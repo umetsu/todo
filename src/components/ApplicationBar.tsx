@@ -45,16 +45,16 @@ export function ApplicationBar({ onLogoutClick }: HeaderProps) {
         <Toolbar>
           <div className={classes.space} />
           <Fab
-            color="secondary"
-            aria-label="create-task"
+            color={'secondary'}
+            aria-label={'create-task'}
             onClick={openCreateTaskForm}
             className={classes.fab}
           >
             <AddIcon />
           </Fab>
           <IconButton
-            edge="end"
-            color="inherit"
+            edge={'end'}
+            color={'inherit'}
             onClick={handleMoreActionClick}
           >
             <MoreIcon />
