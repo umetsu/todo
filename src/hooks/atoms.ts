@@ -11,13 +11,22 @@ export const authAtom = atom<{
   uid: null,
 })
 
-export const uidAtom = atom((get) => {
+export const uidAtom = atom<string | null>((get) => {
   return get(authAtom).uid
 })
 
 export const taskMapAtom = atom<{ [id: string]: Task }>({})
 
-export const tasksAtom = atom((get) => {
-  const taskMap = get(taskMapAtom)
-  return Object.values(taskMap).reverse()
+const allTasksAtom = atom<ReadonlyArray<Task>>((get) => {
+  return Object.values(get(taskMapAtom)).reverse()
+})
+
+export const uncompletedTasksAtom = atom<ReadonlyArray<Task>>((get) => {
+  const tasks = get(allTasksAtom)
+  return tasks.filter((t) => !t.completed)
+})
+
+export const completedTasksAtom = atom<ReadonlyArray<Task>>((get) => {
+  const tasks = get(allTasksAtom)
+  return tasks.filter((t) => t.completed)
 })

@@ -4,14 +4,18 @@ import { TaskItem } from './TaskItem'
 import { Task } from '../model'
 
 interface TaskListProps {
-  tasks: ReadonlyArray<Task>
+  uncompletedTasks: ReadonlyArray<Task>
+  completedTasks: ReadonlyArray<Task>
 }
 
-export function TaskList({ tasks }: TaskListProps) {
+export function TaskList({ uncompletedTasks, completedTasks }: TaskListProps) {
   return (
     <List>
-      {tasks.map((task, index) => (
-        <TaskItem key={index} task={task} />
+      {uncompletedTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
+      ))}
+      {completedTasks.map((task) => (
+        <TaskItem key={task.id} task={task} />
       ))}
     </List>
   )

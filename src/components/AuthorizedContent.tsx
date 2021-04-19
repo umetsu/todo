@@ -19,7 +19,7 @@ interface AuthorizedContentProps {
 
 export function AuthorizedContent({ logout }: AuthorizedContentProps) {
   const classes = useStyles()
-  const { tasks, createTask } = useTasks()
+  const { uncompletedTasks, completedTasks, createTask } = useTasks()
   const { inputTaskName, closeCreateTaskForm } = useCreateTaskForm()
 
   const handleCreateButtonClick = useCallback(async () => {
@@ -33,7 +33,10 @@ export function AuthorizedContent({ logout }: AuthorizedContentProps) {
         <Typography variant={'h6'} noWrap>
           Todo
         </Typography>
-        <TaskList tasks={tasks} />
+        <TaskList
+          uncompletedTasks={uncompletedTasks}
+          completedTasks={completedTasks}
+        />
         <TaskCreateForm onCreateTask={handleCreateButtonClick} />
       </Container>
       <ApplicationBar onLogoutClick={logout} />

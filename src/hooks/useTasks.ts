@@ -4,13 +4,14 @@ import {
   fetchAllTasks,
 } from '../firebase/database'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
-import { taskMapAtom, tasksAtom } from './atoms'
+import { completedTasksAtom, taskMapAtom, uncompletedTasksAtom } from './atoms'
 import { useUid } from './useUid'
 
 export function useTasks() {
   const { uid } = useUid()
   const setTaskMap = useUpdateAtom(taskMapAtom)
-  const tasks = useAtomValue(tasksAtom)
+  const uncompletedTasks = useAtomValue(uncompletedTasksAtom)
+  const completedTasks = useAtomValue(completedTasksAtom)
 
   useEffect(() => {
     ;(async () => {
@@ -35,7 +36,8 @@ export function useTasks() {
   )
 
   return {
-    tasks,
+    uncompletedTasks,
+    completedTasks,
     createTask,
   }
 }

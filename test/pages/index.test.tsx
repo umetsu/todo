@@ -112,5 +112,8 @@ test('完了状態の切り替え', async () => {
   expect(mockedUpdateTask).toBeCalledTimes(1)
   expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, completed: true })
 
-  expect(await screen.findByRole('checkbox')).toBeChecked()
+  expect(
+    // optionsを渡さないとチェック状態が変更される前の要素を取ってきてしまいテストが失敗する
+    await screen.findByRole('checkbox', { checked: true })
+  ).toBeInTheDocument()
 })
