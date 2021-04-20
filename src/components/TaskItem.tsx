@@ -1,5 +1,10 @@
 import React, { useCallback } from 'react'
-import { Checkbox, FormControlLabel, ListItem } from '@material-ui/core'
+import {
+  Checkbox,
+  FormControlLabel,
+  ListItem,
+  Typography,
+} from '@material-ui/core'
 import { Task } from '../model'
 import { useTask } from '../hooks/useTask'
 
@@ -21,7 +26,15 @@ export function TaskItem({ task }: TaskItemProps) {
     <ListItem aria-label={'task-item'}>
       <FormControlLabel
         control={<Checkbox checked={task.completed} onChange={handleChange} />}
-        label={task.name}
+        label={
+          <Typography
+            style={{
+              textDecoration: task.completed ? 'line-through' : undefined,
+            }}
+          >
+            {task.name}
+          </Typography>
+        }
       />
     </ListItem>
   )
