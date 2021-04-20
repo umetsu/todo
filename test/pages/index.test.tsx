@@ -105,15 +105,19 @@ test('完了状態の切り替え', async () => {
 
   renderTopPage({ uid, tasks: [task] })
 
+  // 初期状態の確認
+  expect(screen.queryByText('完了したタスク (0件)')).not.toBeInTheDocument()
   expect(await screen.findByRole('checkbox')).not.toBeChecked()
 
   userEvent.click(await screen.findByRole('checkbox'))
 
+  // APIが呼ばれているか
   expect(mockedUpdateTask).toBeCalledTimes(1)
   expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, completed: true })
 
-  expect(
-    // optionsを渡さないとチェック状態が変更される前の要素を取ってきてしまいテストが失敗する
-    await screen.findByRole('checkbox', { checked: true })
-  ).toBeInTheDocument()
+  // 完了タスク一覧を見えるようにする
+  userEvent.click(await screen.findByText('完了したタスク (1件)'))
+
+  // チェックが入っているか
+  expect(await screen.findByRole('checkbox')).toBeChecked()
 })
