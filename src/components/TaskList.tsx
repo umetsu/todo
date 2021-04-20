@@ -20,9 +20,9 @@ interface TaskListProps {
 export function TaskList({ uncompletedTasks, completedTasks }: TaskListProps) {
   const classes = useStyles()
 
-  const [open, setOpen] = useState(false)
-  const handleClick = useCallback(() => {
-    setOpen((open) => !open)
+  const [openCompletedTasks, setOpenCompletedTasks] = useState(false)
+  const handleCollapseToggleClick = useCallback(() => {
+    setOpenCompletedTasks((open) => !open)
   }, [])
 
   const numOfCompletedTasks = completedTasks.length
@@ -35,13 +35,13 @@ export function TaskList({ uncompletedTasks, completedTasks }: TaskListProps) {
       ))}
       {showCompletedTasks && (
         <div className={classes.completed}>
-          <ListItem button onClick={handleClick}>
+          <ListItem button onClick={handleCollapseToggleClick}>
             <ListItemText>
               完了したタスク ({numOfCompletedTasks}件)
             </ListItemText>
-            {open ? <ExpandLess /> : <ExpandMore />}
+            {openCompletedTasks ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={openCompletedTasks} timeout="auto" unmountOnExit>
             <List disablePadding>
               {completedTasks.map((task) => (
                 <TaskItem key={task.id} task={task} />
