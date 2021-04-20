@@ -2,9 +2,11 @@ import { useCallback, useEffect } from 'react'
 import { useAtom } from 'jotai'
 import { subscribeUser, logout as requestLogout } from '../firebase/auth'
 import { authAtom } from './atoms'
+import { useSafeUpdate } from './useSafeUpdate'
 
 export function useAuth() {
-  const [state, setState] = useAtom(authAtom)
+  const [state, unsafeSetState] = useAtom(authAtom)
+  const setState = useSafeUpdate(unsafeSetState)
 
   useEffect(() => {
     const unsubscribe = subscribeUser(

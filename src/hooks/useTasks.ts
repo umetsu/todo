@@ -6,10 +6,12 @@ import {
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { completedTasksAtom, taskMapAtom, uncompletedTasksAtom } from './atoms'
 import { useUid } from './useUid'
+import { useSafeUpdate } from './useSafeUpdate'
 
 export function useTasks() {
   const { uid } = useUid()
-  const setTaskMap = useUpdateAtom(taskMapAtom)
+  const unsafeSetTaskMap = useUpdateAtom(taskMapAtom)
+  const setTaskMap = useSafeUpdate(unsafeSetTaskMap)
   const uncompletedTasks = useAtomValue(uncompletedTasksAtom)
   const completedTasks = useAtomValue(completedTasksAtom)
 
