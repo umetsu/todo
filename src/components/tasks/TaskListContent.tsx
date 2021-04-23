@@ -8,8 +8,8 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import { useTasks } from '../hooks/useTasks'
-import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
+import { useTasks } from '../../hooks/useTasks'
+import { useCreateTaskForm } from '../../hooks/useCreateTaskForm'
 import { TaskCreateForm } from './TaskCreateForm'
 import { ApplicationBar } from './ApplicationBar'
 

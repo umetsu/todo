@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRequireAuth } from '../hooks/useRequireAuth'
-import { TaskListContent } from '../components/TaskListContent'
+import { TaskListContent } from '../components/tasks/TaskListContent'
 import { FullPageSpinner } from '../components/FullPageSpinner'
 
 export default function TopPage() {

@@ -5,8 +5,8 @@ import {
   ListItem,
   Typography,
 } from '@material-ui/core'
-import { Task } from '../model'
-import { useTask } from '../hooks/useTask'
+import { Task } from '../../model'
+import { useTask } from '../../hooks/useTask'
 
 interface TaskItemProps {
   task: Task

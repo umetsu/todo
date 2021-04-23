@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
-import { Task } from '../model'
+import { Task } from '../../model'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
 interface TaskListProps {
