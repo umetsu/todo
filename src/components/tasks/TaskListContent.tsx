@@ -11,7 +11,7 @@ import {
 import { useTasks } from '../../hooks/useTasks'
 import { useCreateTaskForm } from '../../hooks/useCreateTaskForm'
 import { TaskCreateForm } from './TaskCreateForm'
-import { ApplicationBar } from './ApplicationBar'
+import { BottomAppBar } from './BottomAppBar'
 
 interface AuthorizedContentProps {
   logout: () => Promise<void>
@@ -39,7 +39,7 @@ export function TaskListContent({ logout }: AuthorizedContentProps) {
         />
         <TaskCreateForm onCreateTask={handleCreateButtonClick} />
       </Container>
-      <ApplicationBar onLogoutClick={logout} />
+      <BottomAppBar onLogoutClick={logout} />
     </Box>
   )
 }

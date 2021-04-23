@@ -16,7 +16,7 @@ interface HeaderProps {
   onLogoutClick: () => void
 }
 
-export function ApplicationBar({ onLogoutClick }: HeaderProps) {
+export function BottomAppBar({ onLogoutClick }: HeaderProps) {
   const classes = useStyles()
 
   const { openCreateTaskForm } = useCreateTaskForm()
