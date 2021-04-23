@@ -17,7 +17,7 @@ interface AuthorizedContentProps {
   logout: () => Promise<void>
 }
 
-export function AuthorizedContent({ logout }: AuthorizedContentProps) {
+export function TaskListContent({ logout }: AuthorizedContentProps) {
   const classes = useStyles()
   const { uncompletedTasks, completedTasks, createTask } = useTasks()
   const { inputTaskName, closeCreateTaskForm } = useCreateTaskForm()

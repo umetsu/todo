@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRequireAuth } from '../hooks/useRequireAuth'
-import { AuthorizedContent } from '../components/AuthorizedContent'
+import { TaskListContent } from '../components/TaskListContent'
 import { FullPageSpinner } from '../components/FullPageSpinner'
 
 export default function TopPage() {
@@ -10,9 +10,5 @@ export default function TopPage() {
     return <FullPageSpinner />
   }
 
-  return (
-    <div>
-      <AuthorizedContent logout={logout} />
-    </div>
-  )
+  return <TaskListContent logout={logout} />
 }
