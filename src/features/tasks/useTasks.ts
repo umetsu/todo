@@ -2,11 +2,11 @@ import { useCallback, useEffect } from 'react'
 import {
   createTask as requestCreateTask,
   fetchAllTasks,
-} from '../firebase/database'
+} from '../../firebase/database'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { completedTasksAtom, taskMapAtom, uncompletedTasksAtom } from './atoms'
-import { useUid } from './useUid'
-import { useSafeUpdate } from './useSafeUpdate'
+import { useUid } from '../auth/useUid'
+import { useSafeUpdate } from '../../common/useSafeUpdate'
 
 export function useTasks() {
   const { uid } = useUid()

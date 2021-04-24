@@ -1,5 +1,10 @@
 import firebase from './'
-import { Task } from '../model'
+
+interface Task {
+  id: string
+  name: string
+  completed: boolean
+}
 
 export async function fetchAllTasks(
   uid: string

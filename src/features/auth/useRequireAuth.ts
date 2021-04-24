@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
 import { useAtom } from 'jotai'
-import { logout as requestLogout, subscribeUser } from '../firebase/auth'
-import { authAtom } from './atoms'
-import { useSafeUpdate } from './useSafeUpdate'
+import { logout as requestLogout, subscribeUser } from '../../firebase/auth'
+import { useSafeUpdate } from '../../common/useSafeUpdate'
 import { useRouter } from 'next/router'
+import { authAtom } from './atoms'
 
 export function useRequireAuth() {
   const router = useRouter()

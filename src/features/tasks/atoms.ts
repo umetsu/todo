@@ -1,19 +1,5 @@
 import { atom } from 'jotai'
-import { Task } from '../model'
-
-export const authAtom = atom<{
-  loading: boolean
-  error: Error | null
-  uid: string | null
-}>({
-  loading: true,
-  error: null,
-  uid: null,
-})
-
-export const uidAtom = atom<string | null>((get) => {
-  return get(authAtom).uid
-})
+import { Task } from './models'
 
 export const taskMapAtom = atom<{ [id: string]: Task }>({})
 

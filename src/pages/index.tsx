@@ -1,7 +1,7 @@
 import React from 'react'
-import { useRequireAuth } from '../hooks/useRequireAuth'
-import { TaskListContent } from '../components/tasks/TaskListContent'
-import { FullPageSpinner } from '../components/FullPageSpinner'
+import { useRequireAuth } from '../features/auth/useRequireAuth'
+import { TaskListContent } from '../features/tasks/TaskListContent'
+import { FullPageSpinner } from '../common/FullPageSpinner'
 
 export default function TopPage() {
   const { loading, logout } = useRequireAuth()

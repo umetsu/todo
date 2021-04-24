@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
-import { updateTask as requestUpdateTask } from '../firebase/database'
-import { useUid } from './useUid'
+import { updateTask as requestUpdateTask } from '../../firebase/database'
+import { useUid } from '../auth/useUid'
 import { taskMapAtom } from './atoms'
 import { useAtom } from 'jotai'
-import { Task } from '../model'
+import { Task } from './models'
 
 export function useTask(taskId: string) {
   const { uid } = useUid()

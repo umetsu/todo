@@ -3,7 +3,7 @@ import {
   RenderOptions as RtlRenderOptions,
 } from '@testing-library/react'
 import React from 'react'
-import { AppProviders } from '../src/components/AppProviders'
+import { AppProviders } from '../src/common/AppProviders'
 
 type RenderOptions = RtlRenderOptions
 
