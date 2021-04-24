@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import React from 'react'
-import '../styles/global.css'
-import { AppProviders } from '../components/AppProviders'
+import '../common/global.css'
+import { AppProviders } from '../common/AppProviders'
 import Head from 'next/head'
 
 export default function App({ Component, pageProps }: AppProps) {

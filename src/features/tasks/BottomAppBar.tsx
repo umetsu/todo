@@ -10,13 +10,13 @@ import {
 import MoreIcon from '@material-ui/icons/MoreVert'
 import React, { MouseEvent, useCallback, useState } from 'react'
 import AddIcon from '@material-ui/icons/Add'
-import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
+import { useCreateTaskForm } from './useCreateTaskForm'
 
 interface HeaderProps {
   onLogoutClick: () => void
 }
 
-export function ApplicationBar({ onLogoutClick }: HeaderProps) {
+export function BottomAppBar({ onLogoutClick }: HeaderProps) {
   const classes = useStyles()
 
   const { openCreateTaskForm } = useCreateTaskForm()

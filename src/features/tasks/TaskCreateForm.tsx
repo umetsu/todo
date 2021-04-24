@@ -7,7 +7,7 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
+import { useCreateTaskForm } from './useCreateTaskForm'
 
 interface TaskCreateFormProps {
   onCreateTask: () => void

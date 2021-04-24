@@ -8,16 +8,16 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import { useTasks } from '../hooks/useTasks'
-import { useCreateTaskForm } from '../hooks/useCreateTaskForm'
+import { useTasks } from './useTasks'
+import { useCreateTaskForm } from './useCreateTaskForm'
 import { TaskCreateForm } from './TaskCreateForm'
-import { ApplicationBar } from './ApplicationBar'
+import { BottomAppBar } from './BottomAppBar'
 
 interface AuthorizedContentProps {
   logout: () => Promise<void>
 }
 
-export function AuthorizedContent({ logout }: AuthorizedContentProps) {
+export function TaskListContent({ logout }: AuthorizedContentProps) {
   const classes = useStyles()
   const { uncompletedTasks, completedTasks, createTask } = useTasks()
   const { inputTaskName, closeCreateTaskForm } = useCreateTaskForm()
@@ -39,7 +39,7 @@ export function AuthorizedContent({ logout }: AuthorizedContentProps) {
         />
         <TaskCreateForm onCreateTask={handleCreateButtonClick} />
       </Container>
-      <ApplicationBar onLogoutClick={logout} />
+      <BottomAppBar onLogoutClick={logout} />
     </Box>
   )
 }

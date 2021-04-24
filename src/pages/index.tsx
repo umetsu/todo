@@ -1,25 +1,14 @@
 import React from 'react'
-import { useAuth } from '../hooks/useAuth'
-import { AuthorizedContent } from '../components/AuthorizedContent'
-import { FullPageSpinner } from '../components/FullPageSpinner'
-import { useRouter } from 'next/router'
+import { useRequireAuth } from '../features/auth/useRequireAuth'
+import { TaskListContent } from '../features/tasks/TaskListContent'
+import { FullPageSpinner } from '../common/FullPageSpinner'
 
 export default function TopPage() {
-  const { loading, loggedIn, logout } = useAuth()
-  const router = useRouter()
-
-  if (!loading && !loggedIn) {
-    void router.push('/login')
-    return <></>
-  }
+  const { loading, logout } = useRequireAuth()
 
   if (loading) {
     return <FullPageSpinner />
   }
 
-  return (
-    <div>
-      <AuthorizedContent logout={logout} />
-    </div>
-  )
+  return <TaskListContent logout={logout} />
 }

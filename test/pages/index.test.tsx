@@ -8,7 +8,7 @@ import {
   fetchAllTasks,
 } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
-import { Task } from '../../src/model'
+import { Task } from '../../src/features/tasks/models'
 import firebase from 'firebase'
 import { subscribeUser } from '../../src/firebase/auth'
 

@@ -1,11 +1,11 @@
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 export function useSafeUpdate<Fn extends (...args: never[]) => unknown>(
   update: Fn
 ) {
   const mountedRef = useRef(false)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     mountedRef.current = true
     return () => {
       mountedRef.current = false

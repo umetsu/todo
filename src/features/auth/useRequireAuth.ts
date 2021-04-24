@@ -1,10 +1,12 @@
 import { useCallback, useEffect } from 'react'
 import { useAtom } from 'jotai'
-import { subscribeUser, logout as requestLogout } from '../firebase/auth'
+import { logout as requestLogout, subscribeUser } from '../../firebase/auth'
+import { useSafeUpdate } from '../../common/useSafeUpdate'
+import { useRouter } from 'next/router'
 import { authAtom } from './atoms'
-import { useSafeUpdate } from './useSafeUpdate'
 
-export function useAuth() {
+export function useRequireAuth() {
+  const router = useRouter()
   const [state, unsafeSetState] = useAtom(authAtom)
   const setState = useSafeUpdate(unsafeSetState)
 
@@ -31,6 +33,12 @@ export function useAuth() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!state.loading && !state.uid) {
+      void router.push('/login')
+    }
+  }, [router, state.loading, state.uid])
 
   const logout = useCallback(async () => {
     await requestLogout()
