@@ -2,12 +2,12 @@ import { useCallback } from 'react'
 import { updateTask as requestUpdateTask } from '../../firebase/database'
 import { useUid } from '../auth/useUid'
 import { taskMapAtom } from './atoms'
-import { useAtom } from 'jotai'
 import { Task } from './models'
+import { useRecoilState } from 'recoil'
 
 export function useTask(taskId: string) {
   const { uid } = useUid()
-  const [taskMap, setTaskMap] = useAtom(taskMapAtom)
+  const [taskMap, setTaskMap] = useRecoilState(taskMapAtom)
 
   const changeCompleted = useCallback(
     async (checked: boolean) => {
@@ -15,12 +15,10 @@ export function useTask(taskId: string) {
       // TODO: エラー処理
       await requestUpdateTask(uid, task)
 
-      setTaskMap((tasks) => {
-        return {
-          ...tasks,
-          [taskId]: task,
-        }
-      })
+      setTaskMap((tasks) => ({
+        ...tasks,
+        [taskId]: task,
+      }))
     },
     [setTaskMap, taskId, taskMap, uid]
   )

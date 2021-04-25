@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from 'react'
-import { useAtom } from 'jotai'
 import { logout as requestLogout, subscribeUser } from '../../firebase/auth'
 import { useSafeUpdate } from '../../common/useSafeUpdate'
 import { useRouter } from 'next/router'
 import { authAtom } from './atoms'
+import { useRecoilState } from 'recoil'
 
 export function useRequireAuth() {
   const router = useRouter()
-  const [state, unsafeSetState] = useAtom(authAtom)
+  const [state, unsafeSetState] = useRecoilState(authAtom)
   const setState = useSafeUpdate(unsafeSetState)
 
   useEffect(() => {

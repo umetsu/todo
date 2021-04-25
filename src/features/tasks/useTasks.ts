@@ -3,17 +3,17 @@ import {
   createTask as requestCreateTask,
   fetchAllTasks,
 } from '../../firebase/database'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { completedTasksAtom, taskMapAtom, uncompletedTasksAtom } from './atoms'
 import { useUid } from '../auth/useUid'
 import { useSafeUpdate } from '../../common/useSafeUpdate'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 export function useTasks() {
   const { uid } = useUid()
-  const unsafeSetTaskMap = useUpdateAtom(taskMapAtom)
+  const unsafeSetTaskMap = useSetRecoilState(taskMapAtom)
   const setTaskMap = useSafeUpdate(unsafeSetTaskMap)
-  const uncompletedTasks = useAtomValue(uncompletedTasksAtom)
-  const completedTasks = useAtomValue(completedTasksAtom)
+  const uncompletedTasks = useRecoilValue(uncompletedTasksAtom)
+  const completedTasks = useRecoilValue(completedTasksAtom)
 
   useEffect(() => {
     ;(async () => {

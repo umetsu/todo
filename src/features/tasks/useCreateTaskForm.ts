@@ -1,13 +1,16 @@
 import { useCallback } from 'react'
-import { atom, useAtom } from 'jotai'
+import { atom, useRecoilState } from 'recoil'
 
 const formAtom = atom({
-  createTaskFormOpened: false,
-  inputTaskName: '',
+  key: 'formAtom',
+  default: {
+    createTaskFormOpened: false,
+    inputTaskName: '',
+  },
 })
 
 export function useCreateTaskForm() {
-  const [state, setState] = useAtom(formAtom)
+  const [state, setState] = useRecoilState(formAtom)
 
   const openCreateTaskForm = useCallback(() => {
     setState((state) => ({ ...state, createTaskFormOpened: true }))

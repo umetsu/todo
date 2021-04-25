@@ -1,12 +1,12 @@
 import React from 'react'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import { theme } from '../theme'
-import { Provider as JotaiProvider } from 'jotai'
+import { RecoilRoot } from 'recoil'
 
 export function AppProviders({ children }: { children: React.ReactElement }) {
   return (
-    <JotaiProvider>
+    <RecoilRoot>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </JotaiProvider>
+    </RecoilRoot>
   )
 }
