@@ -2,7 +2,7 @@ import React from 'react'
 import { useRequireAuth } from '../../features/auth/useRequireAuth'
 import { FullPageSpinner } from '../../common/FullPageSpinner'
 import { useRouter } from 'next/router'
-import { TaskEditContent } from '../../features/edit/TaskEditContent'
+import { TaskEditContent } from '../../features/tasks/TaskEditContent'
 
 export default function EditPage() {
   const { loading } = useRequireAuth()
@@ -13,5 +13,9 @@ export default function EditPage() {
     return <FullPageSpinner />
   }
 
-  return <TaskEditContent taskId={taskId} />
+  if (!taskId) {
+    return router.replace('/')
+  }
+
+  return <TaskEditContent taskId={taskId as string} />
 }
