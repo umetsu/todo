@@ -1,13 +1,15 @@
+import { taskMapAtom } from './atoms'
+import { useRecoilState } from 'recoil'
 import { useCallback } from 'react'
+import { Task } from './models'
 import { updateTask as requestUpdateTask } from '../../firebase/database'
 import { useUid } from '../auth/useUid'
-import { taskMapAtom } from './atoms'
-import { Task } from './models'
-import { useRecoilState } from 'recoil'
 
-export function useTask(taskId: string) {
+export function useEditTask(taskId: string) {
   const { uid } = useUid()
   const [taskMap, setTaskMap] = useRecoilState(taskMapAtom)
+  // TODO: recoilにキャッシュされていないときの処理
+  const task = taskMap[taskId]
 
   const changeCompleted = useCallback(
     async (checked: boolean) => {
@@ -24,6 +26,7 @@ export function useTask(taskId: string) {
   )
 
   return {
+    task,
     changeCompleted,
   }
 }

@@ -1,18 +1,30 @@
-import { atom } from 'jotai'
 import { Task } from './models'
+import { atom, selector } from 'recoil'
 
-export const taskMapAtom = atom<{ [id: string]: Task }>({})
-
-const allTasksAtom = atom<ReadonlyArray<Task>>((get) => {
-  return Object.values(get(taskMapAtom)).reverse()
+export const taskMapAtom = atom<{ [id: string]: Task }>({
+  key: 'taskMapAtom',
+  default: {},
 })
 
-export const uncompletedTasksAtom = atom<ReadonlyArray<Task>>((get) => {
-  const tasks = get(allTasksAtom)
-  return tasks.filter((t) => !t.completed)
+const allTasksAtom = selector<ReadonlyArray<Task>>({
+  key: 'allTasksAtom',
+  get: ({ get }) => {
+    return Object.values(get(taskMapAtom)).reverse()
+  },
 })
 
-export const completedTasksAtom = atom<ReadonlyArray<Task>>((get) => {
-  const tasks = get(allTasksAtom)
-  return tasks.filter((t) => t.completed)
+export const uncompletedTasksAtom = selector<ReadonlyArray<Task>>({
+  key: 'uncompletedTasksAtom',
+  get: ({ get }) => {
+    const tasks = get(allTasksAtom)
+    return tasks.filter((t) => !t.completed)
+  },
+})
+
+export const completedTasksAtom = selector<ReadonlyArray<Task>>({
+  key: 'completedTasksAtom',
+  get: ({ get }) => {
+    const tasks = get(allTasksAtom)
+    return tasks.filter((t) => t.completed)
+  },
 })
