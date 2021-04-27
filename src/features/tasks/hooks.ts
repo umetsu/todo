@@ -80,7 +80,7 @@ export function useCreateTask() {
   )
 
   const createTask = useCallback(
-    async (inputTaskName) => {
+    (inputTaskName) => {
       if (!inputTaskName) return
       createTaskMutation(inputTaskName)
     },

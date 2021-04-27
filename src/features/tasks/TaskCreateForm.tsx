@@ -27,9 +27,9 @@ export function TaskCreateForm() {
   )
 
   const handleSubmit = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      await createTask(inputTaskName)
+      createTask(inputTaskName)
       closeCreateTaskForm()
     },
     [closeCreateTaskForm, createTask, inputTaskName]
