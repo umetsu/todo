@@ -9,16 +9,12 @@ import {
 } from '@material-ui/core'
 import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
-import { Task } from './models'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { useTasks } from './hooks'
 
-interface TaskListProps {
-  uncompletedTasks: ReadonlyArray<Task>
-  completedTasks: ReadonlyArray<Task>
-}
-
-export function TaskList({ uncompletedTasks, completedTasks }: TaskListProps) {
+export function TaskList() {
   const classes = useStyles()
+  const { uncompletedTasks, completedTasks } = useTasks()
 
   const [openCompletedTasks, setOpenCompletedTasks] = useState(false)
   const handleCollapseToggleClick = useCallback(() => {

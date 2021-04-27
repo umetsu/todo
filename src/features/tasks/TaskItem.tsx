@@ -6,24 +6,25 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { Task } from './models'
-import { useTask } from './useTask'
 import { useRouter } from 'next/router'
+import { useUpdateTask } from './hooks'
 
 interface TaskItemProps {
   task: Task
 }
 
 export function TaskItem({ task }: TaskItemProps) {
-  const { changeCompleted } = useTask(task.id)
+  const { changeCompleted } = useUpdateTask(task)
   const router = useRouter()
 
+  // TODO: Linkに変更
   const handleClick = useCallback(() => {
     void router.push(`/edit/${task.id}`)
   }, [router, task.id])
 
   const handleChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-      await changeCompleted(checked)
+    (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      changeCompleted(checked)
     },
     [changeCompleted]
   )

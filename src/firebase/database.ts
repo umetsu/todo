@@ -24,6 +24,15 @@ export async function fetchAllTasks(
   )
 }
 
+export async function fetchTask(uid: string, taskId: string): Promise<Task> {
+  const snapshot = await firebase.database().ref(`tasks/${uid}/${taskId}`).get()
+  const v = (snapshot.val() ?? {}) as { name: string; completed: boolean }
+  return {
+    ...v,
+    id: taskId,
+  }
+}
+
 export async function createTask(uid: string, taskName: string): Promise<Task> {
   const newTask = {
     name: taskName,

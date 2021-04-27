@@ -1,17 +1,18 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { TaskList } from './TaskList'
 import {
+  AppBar,
   Box,
   Container,
   createStyles,
   makeStyles,
   Theme,
+  Toolbar,
   Typography,
 } from '@material-ui/core'
-import { useTasks } from './useTasks'
-import { useCreateTaskForm } from './useCreateTaskForm'
 import { TaskCreateForm } from './TaskCreateForm'
 import { BottomAppBar } from './BottomAppBar'
+import { FullPageSpinner } from '../../common/FullPageSpinner'
 
 interface AuthorizedContentProps {
   logout: () => Promise<void>
@@ -19,25 +20,21 @@ interface AuthorizedContentProps {
 
 export function TaskListContent({ logout }: AuthorizedContentProps) {
   const classes = useStyles()
-  const { uncompletedTasks, completedTasks, createTask } = useTasks()
-  const { inputTaskName, closeCreateTaskForm } = useCreateTaskForm()
-
-  const handleCreateButtonClick = useCallback(async () => {
-    await createTask(inputTaskName)
-    closeCreateTaskForm()
-  }, [closeCreateTaskForm, createTask, inputTaskName])
 
   return (
     <Box display={'flex'} flexDirection={'column'} className={classes.box}>
+      <AppBar position="static" color={'transparent'} elevation={0}>
+        <Toolbar>
+          <Typography variant={'h6'} noWrap>
+            Todo
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Container maxWidth={'md'} className={classes.container}>
-        <Typography variant={'h6'} noWrap>
-          Todo
-        </Typography>
-        <TaskList
-          uncompletedTasks={uncompletedTasks}
-          completedTasks={completedTasks}
-        />
-        <TaskCreateForm onCreateTask={handleCreateButtonClick} />
+        <React.Suspense fallback={<FullPageSpinner />}>
+          <TaskList />
+        </React.Suspense>
+        <TaskCreateForm />
       </Container>
       <BottomAppBar onLogoutClick={logout} />
     </Box>
