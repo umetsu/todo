@@ -16,22 +16,22 @@ interface TaskEditFormProps {
 
 export function TaskEditForm({ taskId }: TaskEditFormProps) {
   const { task } = useTask(taskId)
-  const { changeCompleted } = useUpdateTask(task)
+  const { changeCompleted, changeTaskName } = useUpdateTask(task)
   const classes = useStyles({ completed: task.completed })
 
   const completedLabel = task.completed ? '未完了に戻す' : '完了にする'
 
   const handleCheckedChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-      await changeCompleted(checked)
+    (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      changeCompleted(checked)
     },
     [changeCompleted]
   )
 
   const onTextChange = (
-    _: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    // TODO:
+    changeTaskName(event.target.value)
   }
 
   return (
@@ -43,7 +43,7 @@ export function TaskEditForm({ taskId }: TaskEditFormProps) {
         label={completedLabel}
       />
       <TextField
-        value={task.name}
+        defaultValue={task.name}
         disabled={task.completed}
         inputProps={{
           className: classes.taskText,
