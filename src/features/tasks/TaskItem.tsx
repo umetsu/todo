@@ -1,9 +1,12 @@
 import React, { useCallback } from 'react'
 import {
   Checkbox,
+  createStyles,
   ListItem,
   ListItemIcon,
   ListItemText,
+  makeStyles,
+  Theme,
 } from '@material-ui/core'
 import { Task } from './models'
 import { useRouter } from 'next/router'
@@ -16,6 +19,7 @@ interface TaskItemProps {
 export function TaskItem({ task }: TaskItemProps) {
   const { changeCompleted } = useUpdateTask(task)
   const router = useRouter()
+  const classes = useStyles({ completed: task.completed })
 
   // TODO: Linkに変更
   const handleClick = useCallback(() => {
@@ -34,14 +38,23 @@ export function TaskItem({ task }: TaskItemProps) {
       <ListItemIcon>
         <Checkbox checked={task.completed} onChange={handleChange} />
       </ListItemIcon>
-      <ListItemText
-        style={{
-          textDecoration: task.completed ? 'line-through' : undefined,
-        }}
-        onClick={handleClick}
-      >
+      <ListItemText className={classes.taskText} onClick={handleClick}>
         {task.name}
       </ListItemText>
     </ListItem>
   )
 }
+
+interface StyleProps {
+  completed: boolean
+}
+
+const useStyles = makeStyles<Theme, StyleProps>(() =>
+  createStyles({
+    taskText: {
+      textDecoration: ({ completed }: StyleProps) => {
+        return completed ? 'line-through' : undefined
+      },
+    },
+  })
+)
