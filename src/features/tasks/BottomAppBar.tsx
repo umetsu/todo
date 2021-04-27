@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  Zoom,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import React, { MouseEvent, useCallback, useState } from 'react'
@@ -44,14 +45,16 @@ export function BottomAppBar({ onLogoutClick }: HeaderProps) {
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <div className={classes.space} />
-          <Fab
-            color={'secondary'}
-            aria-label={'create-task'}
-            onClick={openCreateTaskForm}
-            className={classes.fab}
-          >
-            <AddIcon />
-          </Fab>
+          <Zoom in>
+            <Fab
+              color={'secondary'}
+              aria-label={'create-task'}
+              onClick={openCreateTaskForm}
+              className={classes.fab}
+            >
+              <AddIcon />
+            </Fab>
+          </Zoom>
           <IconButton
             edge={'end'}
             color={'inherit'}

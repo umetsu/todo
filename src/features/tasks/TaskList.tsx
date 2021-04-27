@@ -30,9 +30,10 @@ export function TaskList() {
         <TaskItem key={task.id} task={task} />
       ))}
       {showCompletedTasks && (
-        <div className={classes.completed}>
+        <>
+          <hr />
           <ListItem button onClick={handleCollapseToggleClick}>
-            <ListItemText>
+            <ListItemText className={classes.completedTask}>
               完了したタスク ({numOfCompletedTasks}件)
             </ListItemText>
             {openCompletedTasks ? <ExpandLess /> : <ExpandMore />}
@@ -44,7 +45,7 @@ export function TaskList() {
               ))}
             </List>
           </Collapse>
-        </div>
+        </>
       )}
     </List>
   )
@@ -52,8 +53,8 @@ export function TaskList() {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    completed: {
-      marginTop: theme.spacing(2),
+    completedTask: {
+      paddingLeft: theme.spacing(1.5),
     },
   })
 )
