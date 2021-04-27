@@ -9,8 +9,8 @@ import {
   Theme,
 } from '@material-ui/core'
 import { Task } from './models'
-import { useRouter } from 'next/router'
 import { useUpdateTask } from './hooks'
+import Link from 'next/link'
 
 interface TaskItemProps {
   task: Task
@@ -18,13 +18,7 @@ interface TaskItemProps {
 
 export function TaskItem({ task }: TaskItemProps) {
   const { changeCompleted } = useUpdateTask(task)
-  const router = useRouter()
   const classes = useStyles({ completed: task.completed })
-
-  // TODO: Linkに変更
-  const handleClick = useCallback(() => {
-    void router.push(`/edit/${task.id}`)
-  }, [router, task.id])
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -38,9 +32,9 @@ export function TaskItem({ task }: TaskItemProps) {
       <ListItemIcon>
         <Checkbox checked={task.completed} onChange={handleChange} />
       </ListItemIcon>
-      <ListItemText className={classes.taskText} onClick={handleClick}>
-        {task.name}
-      </ListItemText>
+      <Link href={'/edit/[taskId]'} as={`/edit/${task.id}`}>
+        <ListItemText className={classes.taskText}>{task.name}</ListItemText>
+      </Link>
     </ListItem>
   )
 }
