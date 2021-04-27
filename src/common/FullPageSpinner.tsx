@@ -8,9 +8,9 @@ export function FullPageSpinner() {
       flexDirection={'column'}
       justifyContent={'center'}
       alignItems={'center'}
-      height={'100vh'}
+      height={'100%'}
     >
-      <CircularProgress />
+      <CircularProgress aria-label={'loading'} />
     </Box>
   )
 }

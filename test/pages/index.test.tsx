@@ -1,11 +1,11 @@
 import React from 'react'
-import { render, screen, waitForElementToBeRemoved } from '../testUtils'
+import { render, screen, waitFor, waitForLoadingToFinish } from '../testUtils'
 import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
 import {
-  updateTask,
   createTask,
   fetchAllTasks,
+  updateTask,
 } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
 import { Task } from '../../src/features/tasks/models'
@@ -38,7 +38,7 @@ const defaultOptions: Required<RenderOptions> = {
   ],
 }
 
-function renderTopPage(options: RenderOptions = defaultOptions) {
+async function renderTopPage(options: RenderOptions = defaultOptions) {
   // undefを許容しないように型変換
   const { uid = defaultOptions.uid, tasks = defaultOptions.tasks } = options
 
@@ -59,10 +59,12 @@ function renderTopPage(options: RenderOptions = defaultOptions) {
   )
 
   render(<TopPage />)
+
+  await waitForLoadingToFinish()
 }
 
 test('トップページの描画', async () => {
-  renderTopPage()
+  await renderTopPage()
 
   expect(mockedFetchAllTasks).toBeCalledTimes(1)
 
@@ -78,7 +80,7 @@ test('タスクの追加', async () => {
     Promise.resolve({ id: 'test-id', name: newTaskName, completed: false })
   )
 
-  renderTopPage({ uid })
+  await renderTopPage({ uid, tasks: [] })
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 
@@ -86,10 +88,15 @@ test('タスクの追加', async () => {
   userEvent.type(await screen.findByRole('textbox'), newTaskName)
   userEvent.click(await screen.findByRole('button', { name: '追加' }))
 
-  expect(mockedCreateTask).toBeCalledTimes(1)
+  await waitFor(() => {
+    expect(mockedCreateTask).toBeCalledTimes(1)
+  })
   expect(mockedCreateTask).toHaveBeenCalledWith(uid, newTaskName)
 
-  await waitForElementToBeRemoved(() => screen.queryByRole('textbox'))
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+
+  expect(await screen.findByText(newTaskName)).toBeInTheDocument()
+  expect(await screen.findByRole('checkbox')).not.toBeChecked()
 })
 
 test('完了状態の切り替え', async () => {
@@ -103,7 +110,7 @@ test('完了状態の切り替え', async () => {
     })
   )
 
-  renderTopPage({ uid, tasks: [task] })
+  await renderTopPage({ uid, tasks: [task] })
 
   // 初期状態の確認
   expect(screen.queryByText('完了したタスク (0件)')).not.toBeInTheDocument()
@@ -112,7 +119,9 @@ test('完了状態の切り替え', async () => {
   userEvent.click(await screen.findByRole('checkbox'))
 
   // APIが呼ばれているか
-  expect(mockedUpdateTask).toBeCalledTimes(1)
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledTimes(1)
+  })
   expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, completed: true })
 
   // 完了タスク一覧を見えるようにする

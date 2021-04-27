@@ -3,6 +3,7 @@ import { useRequireAuth } from '../../features/auth/useRequireAuth'
 import { FullPageSpinner } from '../../common/FullPageSpinner'
 import { useRouter } from 'next/router'
 import { TaskEditContent } from '../../features/tasks/TaskEditContent'
+import { ErrorBoundary } from 'react-error-boundary'
 
 export default function EditPage() {
   const { loading } = useRequireAuth()
@@ -14,8 +15,16 @@ export default function EditPage() {
   }
 
   if (!taskId) {
-    return router.replace('/')
+    void router.replace('/')
+    return <></>
   }
 
-  return <TaskEditContent taskId={taskId as string} />
+  return (
+    <ErrorBoundary
+      fallback={<div>エラーが発生しました</div>}
+      onError={(error, info) => console.error(error, info)}
+    >
+      <TaskEditContent taskId={taskId as string} />
+    </ErrorBoundary>
+  )
 }

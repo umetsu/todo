@@ -1,20 +1,48 @@
 import {
   render as rtlRender,
   RenderOptions as RtlRenderOptions,
+  screen,
+  waitForElementToBeRemoved,
 } from '@testing-library/react'
 import React from 'react'
 import { AppProviders } from '../src/common/AppProviders'
+import { createQueryClient } from '../src/common/createQueryClient'
+
+// RenderOptionsでもらうようにするか悩んだが、今の所テスト側でreact-queryのことを意識する必要無いのでここで定義することにした
+const queryClient = createQueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+})
+
+beforeEach(() => {
+  queryClient.clear()
+})
 
 type RenderOptions = RtlRenderOptions
 
-function customRender(ui: React.ReactElement, options: RenderOptions = {}) {
+export function render(ui: React.ReactElement, options: RenderOptions = {}) {
+  function Wrapper({ children }: { children: React.ReactNode }) {
+    return <AppProviders queryClient={queryClient}>{children}</AppProviders>
+  }
+
   return {
     ...rtlRender(ui, {
-      wrapper: AppProviders,
+      wrapper: Wrapper,
       ...options,
     } as RenderOptions),
   }
 }
 
+export function waitForLoadingToFinish() {
+  return waitForElementToBeRemoved(
+    () => [
+      ...screen.queryAllByLabelText(/loading/i),
+      ...screen.queryAllByText(/loading/i),
+    ],
+    { timeout: 4000 }
+  )
+}
+
 export * from '@testing-library/react'
-export { customRender as render }
+export * from '@testing-library/user-event'

@@ -7,14 +7,11 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useCreateTaskForm } from './useCreateTaskForm'
+import { useCreateTask, useCreateTaskForm } from './hooks'
 
-interface TaskCreateFormProps {
-  onCreateTask: () => void
-}
-
-export function TaskCreateForm({ onCreateTask }: TaskCreateFormProps) {
+export function TaskCreateForm() {
   const classes = useStyles()
+  const { createTask } = useCreateTask()
   const {
     createTaskFormOpened,
     inputTaskName,
@@ -30,11 +27,12 @@ export function TaskCreateForm({ onCreateTask }: TaskCreateFormProps) {
   )
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      onCreateTask()
+      await createTask(inputTaskName)
+      closeCreateTaskForm()
     },
-    [onCreateTask]
+    [closeCreateTaskForm, createTask, inputTaskName]
   )
 
   return (
