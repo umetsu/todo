@@ -1,13 +1,16 @@
 import React, { useCallback } from 'react'
 import {
   Checkbox,
+  createStyles,
   ListItem,
   ListItemIcon,
   ListItemText,
+  makeStyles,
+  Theme,
 } from '@material-ui/core'
 import { Task } from './models'
-import { useRouter } from 'next/router'
 import { useUpdateTask } from './hooks'
+import Link from 'next/link'
 
 interface TaskItemProps {
   task: Task
@@ -15,12 +18,7 @@ interface TaskItemProps {
 
 export function TaskItem({ task }: TaskItemProps) {
   const { changeCompleted } = useUpdateTask(task)
-  const router = useRouter()
-
-  // TODO: Linkに変更
-  const handleClick = useCallback(() => {
-    void router.push(`/edit/${task.id}`)
-  }, [router, task.id])
+  const classes = useStyles({ completed: task.completed })
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -34,14 +32,23 @@ export function TaskItem({ task }: TaskItemProps) {
       <ListItemIcon>
         <Checkbox checked={task.completed} onChange={handleChange} />
       </ListItemIcon>
-      <ListItemText
-        style={{
-          textDecoration: task.completed ? 'line-through' : undefined,
-        }}
-        onClick={handleClick}
-      >
-        {task.name}
-      </ListItemText>
+      <Link href={'/edit/[taskId]'} as={`/edit/${task.id}`}>
+        <ListItemText className={classes.taskText}>{task.name}</ListItemText>
+      </Link>
     </ListItem>
   )
 }
+
+interface StyleProps {
+  completed: boolean
+}
+
+const useStyles = makeStyles<Theme, StyleProps>(() =>
+  createStyles({
+    taskText: {
+      textDecoration: ({ completed }: StyleProps) => {
+        return completed ? 'line-through' : 'none'
+      },
+    },
+  })
+)

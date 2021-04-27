@@ -6,7 +6,6 @@ import {
   Container,
   createStyles,
   makeStyles,
-  Theme,
   Toolbar,
   Typography,
 } from '@material-ui/core'
@@ -41,7 +40,7 @@ export function TaskListContent({ logout }: AuthorizedContentProps) {
   )
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     box: {
       height: '100%',
@@ -50,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       flex: 1,
       overflow: 'scroll',
-      padding: theme.spacing(2),
+      padding: 0,
     },
   })
 )
