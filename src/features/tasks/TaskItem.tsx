@@ -47,7 +47,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
   createStyles({
     taskText: {
       textDecoration: ({ completed }: StyleProps) => {
-        return completed ? 'line-through' : undefined
+        return completed ? 'line-through' : 'none'
       },
     },
   })

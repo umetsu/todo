@@ -63,9 +63,7 @@ const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
     taskText: {
       marginTop: theme.spacing(2),
       textDecoration: ({ completed }: StyleProps) => {
-        // TODO:  Warning: [JSS] Cannot set property 'parentStyleSheet' of undefined
-        // 空文字だと警告が出るが、undefinedにすると打ち消し線が残り続けてしまう
-        return completed ? 'line-through' : ''
+        return completed ? 'line-through' : 'none'
       },
     },
   })
