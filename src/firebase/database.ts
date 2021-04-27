@@ -13,7 +13,7 @@ export async function fetchAllTasks(
   // 場合によってはget関数は効率が悪いようだが、今回はリクエスト数も多くなく、何よりこの関数自体をasync関数として定義できる方が色々とやりやすいので使うことにした
   const snapshot = await firebase
     .database()
-    .ref(`tasks/${uid}`)
+    .ref(tasksPath(uid))
     .orderByKey()
     .get()
   const v = (snapshot.val() ?? {}) as {
@@ -25,7 +25,7 @@ export async function fetchAllTasks(
 }
 
 export async function fetchTask(uid: string, taskId: string): Promise<Task> {
-  const snapshot = await firebase.database().ref(`tasks/${uid}/${taskId}`).get()
+  const snapshot = await firebase.database().ref(taskPath(uid, taskId)).get()
   const v = (snapshot.val() ?? {}) as { name: string; completed: boolean }
   return {
     ...v,
@@ -39,7 +39,7 @@ export async function createTask(uid: string, taskName: string): Promise<Task> {
     completed: false,
   }
 
-  const newTaskRef = await firebase.database().ref(`tasks/${uid}`).push(newTask)
+  const newTaskRef = await firebase.database().ref(tasksPath(uid)).push(newTask)
 
   return {
     id: newTaskRef.key ?? '',
@@ -48,10 +48,18 @@ export async function createTask(uid: string, taskName: string): Promise<Task> {
 }
 
 export async function updateTask(uid: string, task: Task): Promise<Task> {
-  await firebase.database().ref(`tasks/${uid}/${task.id}`).update({
+  await firebase.database().ref(taskPath(uid, task.id)).update({
     name: task.name,
     completed: task.completed,
   })
 
   return task
+}
+
+function tasksPath(uid: string) {
+  return `${uid}/tasks`
+}
+
+function taskPath(uid: string, taskId: string) {
+  return `${tasksPath(uid)}/${taskId}`
 }
