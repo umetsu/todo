@@ -14,6 +14,7 @@ import { TaskList } from '../features/tasks/TaskList'
 import { TaskCreateForm } from '../features/tasks/TaskCreateForm'
 import { BottomAppBar } from '../features/tasks/BottomAppBar'
 import { ProfileDrawer } from '../features/auth/ProfileDrawer'
+import { DeleteAllCompletedTasksConfirmDialog } from '../features/tasks/DeleteAllCompletedTasksConfirmDialog'
 
 export default function TopPage() {
   const classes = useStyles()
@@ -40,6 +41,7 @@ export default function TopPage() {
         </Container>
         <BottomAppBar />
       </Box>
+      <DeleteAllCompletedTasksConfirmDialog />
     </ErrorBoundary>
   )
 }

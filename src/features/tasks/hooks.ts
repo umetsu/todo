@@ -148,10 +148,6 @@ export function useDeleteAllCompletedTasks() {
   const { uid } = useUser()
   const queryClient = useQueryClient()
 
-  const completedTasks = Object.values(
-    queryClient.getQueryData<TasksById>('tasks') ?? {}
-  ).filter((task) => task.completed)
-
   const { mutate: deleteTasksMutation } = useMutation<
     void,
     Error,
@@ -173,12 +169,14 @@ export function useDeleteAllCompletedTasks() {
     },
   })
 
-  const deleteAllCompletedTasks = useCallback(() => {
-    deleteTasksMutation(completedTasks)
-  }, [completedTasks, deleteTasksMutation])
+  const deleteAllCompletedTasks = useCallback(
+    (completedTasks: ReadonlyArray<Task>) => {
+      deleteTasksMutation(completedTasks)
+    },
+    [deleteTasksMutation]
+  )
 
   return {
-    numOfCompletedTasks: completedTasks.length,
     deleteAllCompletedTasks,
   }
 }
@@ -219,5 +217,35 @@ export function useCreateTaskForm() {
     openCreateTaskForm,
     closeCreateTaskForm,
     changeInputTaskName,
+  }
+}
+
+const deleteAllCompletedTasksConfirmDialogAtom = atom({
+  key: 'deleteAllCompletedTasksConfirmDialogAtom',
+  default: {
+    opened: false,
+  },
+})
+
+export function useDeleteAllCompletedTasksConfirmDialog() {
+  const [state, setState] = useRecoilState(
+    deleteAllCompletedTasksConfirmDialogAtom
+  )
+
+  const openConfirmDialog = useCallback(() => {
+    setState((state) => ({ ...state, opened: true }))
+  }, [setState])
+
+  const closeConfirmDialog = useCallback(() => {
+    setState((state) => ({
+      ...state,
+      opened: false,
+    }))
+  }, [setState])
+
+  return {
+    opened: state.opened,
+    openConfirmDialog,
+    closeConfirmDialog,
   }
 }
