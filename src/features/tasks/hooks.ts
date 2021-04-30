@@ -6,6 +6,7 @@ import {
   fetchAllTasks,
   fetchTask,
   updateTask as requestUpdateTask,
+  deleteTasks as requestDeleteTasks,
 } from '../../firebase/database'
 import { useCallback } from 'react'
 import { atom, useRecoilState } from 'recoil'
@@ -141,6 +142,45 @@ function updateCache(queryClient: QueryClient, task: Task) {
     [task.id]: task,
   }))
   queryClient.setQueryData(['task', { taskId: task.id }], task)
+}
+
+export function useDeleteAllCompletedTasks() {
+  const { uid } = useUid()
+  const queryClient = useQueryClient()
+
+  const completedTasks = Object.values(
+    queryClient.getQueryData<TasksById>('tasks') ?? {}
+  ).filter((task) => task.completed)
+
+  const { mutate: deleteTasksMutation } = useMutation<
+    void,
+    Error,
+    ReadonlyArray<Task>
+  >((tasks: ReadonlyArray<Task>) => requestDeleteTasks(uid, tasks), {
+    onSuccess: (_, deleteTasks) => {
+      queryClient.setQueryData<TasksById>('tasks', (tasks) => {
+        return deleteTasks.reduce((tasks, task) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { [task.id]: _, ...rest } = tasks
+          return rest
+        }, tasks ?? {})
+      })
+      deleteTasks.forEach((task) => {
+        queryClient.removeQueries(['task', { taskId: task.id }], {
+          exact: true,
+        })
+      })
+    },
+  })
+
+  const deleteAllCompletedTasks = useCallback(() => {
+    deleteTasksMutation(completedTasks)
+  }, [completedTasks, deleteTasksMutation])
+
+  return {
+    numOfCompletedTasks: completedTasks.length,
+    deleteAllCompletedTasks,
+  }
 }
 
 const formAtom = atom({
