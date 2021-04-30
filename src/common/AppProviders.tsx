@@ -15,7 +15,7 @@ export function AppProviders({ children, queryClient }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
       {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} position={'top-right'} />
       )}
       <RecoilRoot>
         <ThemeProvider theme={theme}>

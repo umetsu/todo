@@ -1,17 +1,14 @@
 import {
   AppBar,
-  Fab,
   IconButton,
   makeStyles,
   Menu,
   MenuItem,
   Toolbar,
-  Zoom,
 } from '@material-ui/core'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import React, { MouseEvent, useCallback, useState } from 'react'
-import AddIcon from '@material-ui/icons/Add'
-import { useCreateTaskForm } from './hooks'
+import { CreateButton } from './CreateButton'
 
 interface Props {
   onDeleteAllCompletedTasksClick: () => void
@@ -23,8 +20,6 @@ export function BottomAppBar({
   onLogoutClick,
 }: Props) {
   const classes = useStyles()
-
-  const { openCreateTaskForm } = useCreateTaskForm()
 
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null)
 
@@ -55,19 +50,10 @@ export function BottomAppBar({
 
   return (
     <>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position={'static'}>
         <Toolbar>
           <div className={classes.space} />
-          <Zoom in>
-            <Fab
-              color={'secondary'}
-              aria-label={'create-task'}
-              onClick={openCreateTaskForm}
-              className={classes.fab}
-            >
-              <AddIcon />
-            </Fab>
-          </Zoom>
+          <CreateButton />
           <IconButton
             edge={'end'}
             color={'inherit'}
@@ -91,19 +77,6 @@ export function BottomAppBar({
 }
 
 const useStyles = makeStyles(() => ({
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-  },
-  fab: {
-    // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    position: 'absolute' as 'absolute',
-    zIndex: 1,
-    top: '-30px',
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  },
   space: {
     flexGrow: 1,
   },
