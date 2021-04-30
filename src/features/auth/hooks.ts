@@ -1,4 +1,4 @@
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import firebase from 'firebase'
 import { useSafeUpdate } from '../../common/useSafeUpdate'
 import { useCallback, useEffect } from 'react'
@@ -63,5 +63,35 @@ export function useUser() {
     user,
     authChecking: user === undefined && error === null,
     logout,
+  }
+}
+
+export const profileAtom = atom<{
+  profileOpened: boolean
+}>({
+  key: 'profileAtom',
+  default: {
+    profileOpened: false,
+  },
+})
+
+export function useProfile() {
+  const [state, setState] = useRecoilState(profileAtom)
+
+  const openProfile = useCallback(() => {
+    setState((state) => ({ ...state, profileOpened: true }))
+  }, [setState])
+
+  const closeProfile = useCallback(() => {
+    setState((state) => ({
+      ...state,
+      profileOpened: false,
+    }))
+  }, [setState])
+
+  return {
+    profileOpened: state.profileOpened,
+    openProfile,
+    closeProfile,
   }
 }

@@ -1,6 +1,7 @@
 import {
   Collapse,
   createStyles,
+  Divider,
   List,
   ListItem,
   ListItemText,
@@ -31,7 +32,7 @@ export function TaskList() {
       ))}
       {showCompletedTasks && (
         <>
-          <hr />
+          <Divider />
           <ListItem button onClick={handleCollapseToggleClick}>
             <ListItemText className={classes.completedTask}>
               完了したタスク ({numOfCompletedTasks}件)

@@ -1,78 +1,32 @@
-import {
-  AppBar,
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Toolbar,
-} from '@material-ui/core'
-import MoreIcon from '@material-ui/icons/MoreVert'
-import React, { MouseEvent, useCallback, useState } from 'react'
+import { AppBar, IconButton, makeStyles, Toolbar } from '@material-ui/core'
+import React from 'react'
 import { CreateButton } from './CreateButton'
+import { Delete as DeleteIcon, Menu as MenuIcon } from '@material-ui/icons'
+import { useProfile } from '../auth/hooks'
+import { useDeleteAllCompletedTasks } from './hooks'
 
-interface Props {
-  onDeleteAllCompletedTasksClick: () => void
-  onLogoutClick: () => void
-}
-
-export function BottomAppBar({
-  onDeleteAllCompletedTasksClick,
-  onLogoutClick,
-}: Props) {
+export function BottomAppBar() {
   const classes = useStyles()
-
-  const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null)
-
-  const handleMoreActionClick = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      setAnchorElement(event.currentTarget)
-    },
-    []
-  )
-
-  function closeMenu() {
-    setAnchorElement(null)
-  }
-
-  const handleMenuClose = useCallback(() => {
-    closeMenu()
-  }, [])
-
-  const handleDeleteTasks = useCallback(() => {
-    onDeleteAllCompletedTasksClick()
-    closeMenu()
-  }, [onDeleteAllCompletedTasksClick])
-
-  const handleLogoutClick = useCallback(() => {
-    onLogoutClick()
-    closeMenu()
-  }, [onLogoutClick])
+  const { openProfile } = useProfile()
+  const { deleteAllCompletedTasks } = useDeleteAllCompletedTasks()
 
   return (
-    <>
-      <AppBar position={'static'}>
-        <Toolbar>
-          <div className={classes.space} />
-          <CreateButton />
-          <IconButton
-            edge={'end'}
-            color={'inherit'}
-            onClick={handleMoreActionClick}
-          >
-            <MoreIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Menu
-        anchorEl={anchorElement}
-        keepMounted
-        open={Boolean(anchorElement)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem onClick={handleDeleteTasks}>完了したタスクを削除</MenuItem>
-        <MenuItem onClick={handleLogoutClick}>ログアウト</MenuItem>
-      </Menu>
-    </>
+    <AppBar position={'static'}>
+      <Toolbar>
+        <CreateButton />
+        <IconButton edge={'start'} color={'inherit'} onClick={openProfile}>
+          <MenuIcon />
+        </IconButton>
+        <div className={classes.space} />
+        <IconButton
+          edge={'end'}
+          color={'inherit'}
+          onClick={deleteAllCompletedTasks}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   )
 }
 

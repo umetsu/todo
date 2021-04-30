@@ -1,6 +1,4 @@
 import React from 'react'
-import { useDeleteAllCompletedTasks } from '../features/tasks/hooks'
-import { useUser } from '../features/auth/hooks'
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   AppBar,
@@ -15,17 +13,17 @@ import { FullPageSpinner } from '../common/FullPageSpinner'
 import { TaskList } from '../features/tasks/TaskList'
 import { TaskCreateForm } from '../features/tasks/TaskCreateForm'
 import { BottomAppBar } from '../features/tasks/BottomAppBar'
+import { ProfileDrawer } from '../features/auth/ProfileDrawer'
 
 export default function TopPage() {
   const classes = useStyles()
-  const { logout } = useUser()
-  const { deleteAllCompletedTasks } = useDeleteAllCompletedTasks()
 
   return (
     <ErrorBoundary
       fallback={<div>エラーが発生しました</div>}
       onError={console.error}
     >
+      <ProfileDrawer />
       <Box display={'flex'} flexDirection={'column'} className={classes.box}>
         <AppBar position="static" color={'transparent'} elevation={0}>
           <Toolbar>
@@ -40,10 +38,7 @@ export default function TopPage() {
           </React.Suspense>
           <TaskCreateForm />
         </Container>
-        <BottomAppBar
-          onDeleteAllCompletedTasksClick={deleteAllCompletedTasks}
-          onLogoutClick={logout}
-        />
+        <BottomAppBar />
       </Box>
     </ErrorBoundary>
   )
