@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query'
-import { useUid } from '../auth/useUid'
+import { useUser } from '../auth/hooks'
 import { Task } from './models'
 import {
   createTask as requestCreateTask,
@@ -15,7 +15,7 @@ type TasksById = { [id: string]: Task }
 
 export function useTasks() {
   const queryClient = useQueryClient()
-  const { uid } = useUid()
+  const { uid } = useUser()
 
   const { data } = useQuery<
     TasksById,
@@ -59,7 +59,7 @@ const loadingTask: Task = {
 }
 
 export function useTask(taskId: string) {
-  const { uid } = useUid()
+  const { uid } = useUser()
   const { data } = useQuery<Task, Error, Task>(['task', { taskId }], () =>
     fetchTask(uid, taskId)
   )
@@ -70,7 +70,7 @@ export function useTask(taskId: string) {
 }
 
 export function useCreateTask() {
-  const { uid } = useUid()
+  const { uid } = useUser()
   const queryClient = useQueryClient()
 
   const { mutate: createTaskMutation } = useMutation<Task, Error, string>(
@@ -94,7 +94,7 @@ export function useCreateTask() {
 }
 
 export function useUpdateTask(task: Task) {
-  const { uid } = useUid()
+  const { uid } = useUser()
   const queryClient = useQueryClient()
 
   const { mutate: updateTaskMutation } = useMutation<
@@ -145,7 +145,7 @@ function updateCache(queryClient: QueryClient, task: Task) {
 }
 
 export function useDeleteAllCompletedTasks() {
-  const { uid } = useUid()
+  const { uid } = useUser()
   const queryClient = useQueryClient()
 
   const completedTasks = Object.values(

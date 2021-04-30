@@ -4,6 +4,7 @@ import { theme } from '../theme'
 import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { AuthCheck } from '../features/auth/AuthCheck'
 
 interface Props {
   children: React.ReactNode
@@ -17,7 +18,9 @@ export function AppProviders({ children, queryClient }: Props) {
         <ReactQueryDevtools initialIsOpen={false} />
       )}
       <RecoilRoot>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <AuthCheck>{children}</AuthCheck>
+        </ThemeProvider>
       </RecoilRoot>
     </QueryClientProvider>
   )
