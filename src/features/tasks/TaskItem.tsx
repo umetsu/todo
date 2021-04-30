@@ -12,11 +12,11 @@ import { Task } from './models'
 import { useUpdateTask } from './hooks'
 import Link from 'next/link'
 
-interface TaskItemProps {
+interface Props {
   task: Task
 }
 
-export function TaskItem({ task }: TaskItemProps) {
+export function TaskItem({ task }: Props) {
   const { changeCompleted } = useUpdateTask(task)
   const classes = useStyles({ completed: task.completed })
 

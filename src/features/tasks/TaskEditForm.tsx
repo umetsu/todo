@@ -10,11 +10,11 @@ import {
 } from '@material-ui/core'
 import { useTask, useUpdateTask } from './hooks'
 
-interface TaskEditFormProps {
+interface Props {
   taskId: string
 }
 
-export function TaskEditForm({ taskId }: TaskEditFormProps) {
+export function TaskEditForm({ taskId }: Props) {
   const { task } = useTask(taskId)
   const { changeCompleted, changeTaskName } = useUpdateTask(task)
   const classes = useStyles({ completed: task.completed })

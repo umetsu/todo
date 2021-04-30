@@ -13,7 +13,7 @@ import React, { MouseEvent, useCallback, useState } from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import { useCreateTaskForm } from './hooks'
 
-interface BottomAppBarProps {
+interface Props {
   onDeleteAllCompletedTasksClick: () => void
   onLogoutClick: () => void
 }
@@ -21,7 +21,7 @@ interface BottomAppBarProps {
 export function BottomAppBar({
   onDeleteAllCompletedTasksClick,
   onLogoutClick,
-}: BottomAppBarProps) {
+}: Props) {
   const classes = useStyles()
 
   const { openCreateTaskForm } = useCreateTaskForm()

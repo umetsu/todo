@@ -14,11 +14,11 @@ import Link from 'next/link'
 import { TaskEditForm } from './TaskEditForm'
 import { FullPageSpinner } from '../../common/FullPageSpinner'
 
-interface TaskEditContentProps {
+interface Props {
   taskId: string
 }
 
-export function TaskEditContent({ taskId }: TaskEditContentProps) {
+export function TaskEditContent({ taskId }: Props) {
   const classes = useStyles()
 
   return (

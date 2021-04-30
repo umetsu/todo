@@ -13,15 +13,12 @@ import { TaskCreateForm } from './TaskCreateForm'
 import { BottomAppBar } from './BottomAppBar'
 import { FullPageSpinner } from '../../common/FullPageSpinner'
 
-interface TaskListContentProps {
+interface Props {
   deleteAllCompletedTasks: () => void
   logout: () => Promise<void>
 }
 
-export function TaskListContent({
-  deleteAllCompletedTasks,
-  logout,
-}: TaskListContentProps) {
+export function TaskListContent({ deleteAllCompletedTasks, logout }: Props) {
   const classes = useStyles()
 
   return (

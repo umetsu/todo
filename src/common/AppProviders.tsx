@@ -5,12 +5,12 @@ import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-interface AppProviderProps {
+interface Props {
   children: React.ReactNode
   queryClient: QueryClient
 }
 
-export function AppProviders({ children, queryClient }: AppProviderProps) {
+export function AppProviders({ children, queryClient }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
       {process.env.NODE_ENV === 'development' && (
