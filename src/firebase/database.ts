@@ -56,6 +56,11 @@ export async function updateTask(uid: string, task: Task): Promise<Task> {
   return task
 }
 
+export async function deleteTasks(uid: string, tasks: ReadonlyArray<Task>) {
+  const deletes = Object.fromEntries(tasks.map((task) => [task.id, null]))
+  await firebase.database().ref(tasksPath(uid)).update(deletes)
+}
+
 function tasksPath(uid: string) {
   return `${uid}/tasks`
 }

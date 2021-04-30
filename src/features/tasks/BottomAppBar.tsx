@@ -13,11 +13,15 @@ import React, { MouseEvent, useCallback, useState } from 'react'
 import AddIcon from '@material-ui/icons/Add'
 import { useCreateTaskForm } from './hooks'
 
-interface HeaderProps {
+interface BottomAppBarProps {
+  onDeleteAllCompletedTasksClick: () => void
   onLogoutClick: () => void
 }
 
-export function BottomAppBar({ onLogoutClick }: HeaderProps) {
+export function BottomAppBar({
+  onDeleteAllCompletedTasksClick,
+  onLogoutClick,
+}: BottomAppBarProps) {
   const classes = useStyles()
 
   const { openCreateTaskForm } = useCreateTaskForm()
@@ -31,13 +35,22 @@ export function BottomAppBar({ onLogoutClick }: HeaderProps) {
     []
   )
 
-  const handleMenuClose = useCallback(() => {
+  function closeMenu() {
     setAnchorElement(null)
+  }
+
+  const handleMenuClose = useCallback(() => {
+    closeMenu()
   }, [])
+
+  const handleDeleteTasks = useCallback(() => {
+    onDeleteAllCompletedTasksClick()
+    closeMenu()
+  }, [onDeleteAllCompletedTasksClick])
 
   const handleLogoutClick = useCallback(() => {
     onLogoutClick()
-    setAnchorElement(null)
+    closeMenu()
   }, [onLogoutClick])
 
   return (
@@ -70,6 +83,7 @@ export function BottomAppBar({ onLogoutClick }: HeaderProps) {
         open={Boolean(anchorElement)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={handleDeleteTasks}>完了したタスクを削除</MenuItem>
         <MenuItem onClick={handleLogoutClick}>ログアウト</MenuItem>
       </Menu>
     </>

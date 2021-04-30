@@ -13,11 +13,15 @@ import { TaskCreateForm } from './TaskCreateForm'
 import { BottomAppBar } from './BottomAppBar'
 import { FullPageSpinner } from '../../common/FullPageSpinner'
 
-interface AuthorizedContentProps {
+interface TaskListContentProps {
+  deleteAllCompletedTasks: () => void
   logout: () => Promise<void>
 }
 
-export function TaskListContent({ logout }: AuthorizedContentProps) {
+export function TaskListContent({
+  deleteAllCompletedTasks,
+  logout,
+}: TaskListContentProps) {
   const classes = useStyles()
 
   return (
@@ -35,7 +39,10 @@ export function TaskListContent({ logout }: AuthorizedContentProps) {
         </React.Suspense>
         <TaskCreateForm />
       </Container>
-      <BottomAppBar onLogoutClick={logout} />
+      <BottomAppBar
+        onDeleteAllCompletedTasksClick={deleteAllCompletedTasks}
+        onLogoutClick={logout}
+      />
     </Box>
   )
 }
