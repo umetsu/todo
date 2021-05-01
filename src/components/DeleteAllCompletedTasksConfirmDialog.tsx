@@ -27,7 +27,7 @@ export function DeleteAllCompletedTasksConfirmDialog() {
   const handleDelete = useCallback(() => {
     deleteAllCompletedTasks(completedTasks)
     closeConfirmDialog()
-  }, [closeConfirmDialog, deleteAllCompletedTasks])
+  }, [closeConfirmDialog, completedTasks, deleteAllCompletedTasks])
 
   return (
     <Dialog open={opened} onClose={closeConfirmDialog}>

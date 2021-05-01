@@ -1,5 +1,5 @@
 import { useUser } from './auth/useUser'
-import { QueryClient, useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { Task } from '../models/tasks'
 import { createTask as requestCreateTask } from '../firebase/database'
 import { useCallback } from 'react'
@@ -11,7 +11,7 @@ export function useCreateTask() {
   const { mutate: createTaskMutation } = useMutation<Task, Error, string>(
     (taskName) => requestCreateTask(uid, taskName),
     {
-      onSuccess: (task) => updateCache(queryClient, task),
+      onSettled: () => queryClient.invalidateQueries('tasks'),
     }
   )
 
@@ -26,12 +26,4 @@ export function useCreateTask() {
   return {
     createTask,
   }
-}
-
-function updateCache(queryClient: QueryClient, task: Task) {
-  queryClient.setQueryData<{ [id: string]: Task }>('tasks', (tasks) => ({
-    ...tasks,
-    [task.id]: task,
-  }))
-  queryClient.setQueryData(['task', { taskId: task.id }], task)
 }

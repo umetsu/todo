@@ -13,20 +13,14 @@ export function useDeleteAllCompletedTasks() {
     Error,
     ReadonlyArray<Task>
   >((tasks: ReadonlyArray<Task>) => requestDeleteTasks(uid, tasks), {
-    onSuccess: (_, deleteTasks) => {
-      queryClient.setQueryData<{ [id: string]: Task }>('tasks', (tasks) => {
-        return deleteTasks.reduce((tasks, task) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { [task.id]: _, ...rest } = tasks
-          return rest
-        }, tasks ?? {})
-      })
-      deleteTasks.forEach((task) => {
+    onSuccess: (_, deletedTasks) => {
+      deletedTasks.forEach((task) => {
         queryClient.removeQueries(['task', { taskId: task.id }], {
           exact: true,
         })
       })
     },
+    onSettled: () => queryClient.invalidateQueries('tasks'),
   })
 
   const deleteAllCompletedTasks = useCallback(
