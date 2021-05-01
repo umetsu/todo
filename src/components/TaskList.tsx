@@ -12,6 +12,7 @@ import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { useTasks } from '../hooks/useTasks'
+import { EmptyList } from './EmptyList'
 
 export function TaskList() {
   const classes = useStyles()
@@ -22,8 +23,13 @@ export function TaskList() {
     setOpenCompletedTasks((open) => !open)
   }, [])
 
+  const numOfUncompletedTasks = uncompletedTasks.length
   const numOfCompletedTasks = completedTasks.length
   const showCompletedTasks = numOfCompletedTasks > 0
+
+  if (numOfUncompletedTasks + numOfCompletedTasks === 0) {
+    return <EmptyList />
+  }
 
   return (
     <List>

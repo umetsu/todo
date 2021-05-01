@@ -1489,6 +1489,13 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
 
+"@types/react-kawaii@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@types/react-kawaii/-/react-kawaii-0.11.0.tgz#99e8454c006f9e163f2910d44d15c0f3908ffcaf"
+  integrity sha512-SgasNJZL2DaHt//sxWWDHv1j4HAznkUpHfYh9BGOsDku/DDu6dDATUQSkTYan6883YYSEP+nJM8F0FGxhrCUSg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.0.tgz#882839db465df1320e4753e6e9f70ca7e9b4d46d"
@@ -6266,6 +6273,13 @@ react-is@16.13.1, react-is@^16.12.0, react-is@^16.7.0, react-is@^16.8.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+
+react-kawaii@0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-kawaii/-/react-kawaii-0.17.0.tgz#18ba11979c32e5932ffc78fb4042898b3a0d4a64"
+  integrity sha512-BP2FCZC5IH2P3bXBAdoikMapRQEBu4ncLW5P2TKZjDYfsaq3kiSbU8DXqIH7UDWpAdI5ofhWJ62F6LqKD5TLFQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-query@3.13.12:
   version "3.13.12"
