@@ -1,9 +1,9 @@
 import { AppProps } from 'next/app'
 import React from 'react'
-import '../common/global.css'
-import { AppProviders } from '../common/AppProviders'
+import '../styles/global.css'
+import { AppProviders } from '../components/AppProviders'
 import Head from 'next/head'
-import { createQueryClient } from '../common/createQueryClient'
+import { createQueryClient } from '../utils/createQueryClient'
 
 export default function App({ Component, pageProps }: AppProps) {
   React.useEffect(() => {

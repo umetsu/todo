@@ -4,7 +4,7 @@ import { theme } from '../theme'
 import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { AuthCheck } from '../features/auth/AuthCheck'
+import { AuthCheck } from './AuthCheck'
 
 interface Props {
   children: React.ReactNode

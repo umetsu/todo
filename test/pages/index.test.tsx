@@ -8,7 +8,7 @@ import {
   updateTask,
 } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
-import { Task } from '../../src/features/tasks/models'
+import { Task } from '../../src/models/tasks'
 import firebase from 'firebase'
 import { subscribeUser } from '../../src/firebase/auth'
 import { useRouter } from 'next/router'

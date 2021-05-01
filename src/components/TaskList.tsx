@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import { useTasks } from './hooks'
+import { useTasks } from '../hooks/useTasks'
 
 export function TaskList() {
   const classes = useStyles()

@@ -9,12 +9,12 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import { FullPageSpinner } from '../common/FullPageSpinner'
-import { TaskList } from '../features/tasks/TaskList'
-import { TaskCreateForm } from '../features/tasks/TaskCreateForm'
-import { BottomAppBar } from '../features/tasks/BottomAppBar'
-import { ProfileDrawer } from '../features/auth/ProfileDrawer'
-import { DeleteAllCompletedTasksConfirmDialog } from '../features/tasks/DeleteAllCompletedTasksConfirmDialog'
+import { FullPageSpinner } from '../components/FullPageSpinner'
+import { TaskList } from '../components/TaskList'
+import { TaskCreateForm } from '../components/TaskCreateForm'
+import { BottomAppBar } from '../components/BottomAppBar'
+import { SideDrawer } from '../components/SideDrawer'
+import { DeleteAllCompletedTasksConfirmDialog } from '../components/DeleteAllCompletedTasksConfirmDialog'
 
 export default function TopPage() {
   const classes = useStyles()
@@ -24,7 +24,7 @@ export default function TopPage() {
       fallback={<div>エラーが発生しました</div>}
       onError={console.error}
     >
-      <ProfileDrawer />
+      <SideDrawer />
       <Box display={'flex'} flexDirection={'column'} className={classes.box}>
         <AppBar position="static" color={'transparent'} elevation={0}>
           <Toolbar>

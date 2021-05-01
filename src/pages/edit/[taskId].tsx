@@ -13,8 +13,8 @@ import {
 } from '@material-ui/core'
 import Link from 'next/link'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { FullPageSpinner } from '../../common/FullPageSpinner'
-import { TaskEditForm } from '../../features/tasks/TaskEditForm'
+import { FullPageSpinner } from '../../components/FullPageSpinner'
+import { TaskEditForm } from '../../components/TaskEditForm'
 
 export default function EditPage() {
   const classes = useStyles()

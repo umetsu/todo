@@ -8,7 +8,8 @@ import {
   TextField,
   Theme,
 } from '@material-ui/core'
-import { useTask, useUpdateTask } from './hooks'
+import { useTask } from '../hooks/useTask'
+import { useUpdateTask } from '../hooks/useUpdateTask'
 
 interface Props {
   taskId: string

@@ -1,11 +1,11 @@
 import React from 'react'
 import { Fab, makeStyles, Zoom } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { useCreateTaskForm } from './hooks'
+import { useTaskCreateForm } from '../hooks/useTaskCreateForm'
 
 export function CreateButton() {
   const classes = useStyles()
-  const { openCreateTaskForm } = useCreateTaskForm()
+  const { openCreateTaskForm } = useTaskCreateForm()
 
   return (
     <Zoom in>

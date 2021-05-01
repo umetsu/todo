@@ -7,17 +7,18 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useCreateTask, useCreateTaskForm } from './hooks'
+import { useCreateTask } from '../hooks/useCreateTask'
+import { useTaskCreateForm } from '../hooks/useTaskCreateForm'
 
 export function TaskCreateForm() {
   const classes = useStyles()
   const { createTask } = useCreateTask()
   const {
-    createTaskFormOpened,
+    taskCreateFormOpened,
     inputTaskName,
     closeCreateTaskForm,
     changeInputTaskName,
-  } = useCreateTaskForm()
+  } = useTaskCreateForm()
 
   const handleTaskNameChange = useCallback(
     (event) => {
@@ -38,7 +39,7 @@ export function TaskCreateForm() {
   return (
     <Drawer
       anchor={'bottom'}
-      open={createTaskFormOpened}
+      open={taskCreateFormOpened}
       onClose={closeCreateTaskForm}
     >
       <form onSubmit={handleSubmit}>

@@ -1,7 +1,8 @@
 import React, { ReactNode, useEffect } from 'react'
-import { FullPageSpinner } from '../../common/FullPageSpinner'
+import { FullPageSpinner } from './FullPageSpinner'
 import { useRouter } from 'next/router'
-import { useAuthCheck, useUser } from './hooks'
+import { useAuthCheck } from '../hooks/auth/useAuthCheck'
+import { useUser } from '../hooks/auth/useUser'
 
 interface Props {
   children: ReactNode

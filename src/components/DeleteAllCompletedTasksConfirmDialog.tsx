@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react'
 import {
-  useDeleteAllCompletedTasks,
-  useDeleteAllCompletedTasksConfirmDialog,
-} from './hooks'
-import {
   Button,
   Dialog,
   DialogActions,
@@ -11,23 +7,25 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
+import { useDeleteAllCompletedTasks } from '../hooks/useDeleteAllCompletedTasks'
+import { useDeleteAllCompletedTasksConfirmDialog } from '../hooks/useDeleteAllCompletedTasksConfirmDialog'
 
 export function DeleteAllCompletedTasksConfirmDialog() {
   const {
     opened,
     closeConfirmDialog,
   } = useDeleteAllCompletedTasksConfirmDialog()
-  const {
-    numOfCompletedTasks,
-    deleteAllCompletedTasks,
-  } = useDeleteAllCompletedTasks()
+  const { deleteAllCompletedTasks } = useDeleteAllCompletedTasks()
+  // TODO: 完了済みタスクの件数を取得
+  const numOfCompletedTasks = 0
 
   const handleCancel = useCallback(() => {
     closeConfirmDialog()
   }, [closeConfirmDialog])
 
   const handleDelete = useCallback(() => {
-    deleteAllCompletedTasks()
+    // TODO: 完了済みタスクを渡す
+    deleteAllCompletedTasks([])
     closeConfirmDialog()
   }, [closeConfirmDialog, deleteAllCompletedTasks])
 

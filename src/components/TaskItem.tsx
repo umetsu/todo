@@ -8,9 +8,9 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { Task } from './models'
-import { useUpdateTask } from './hooks'
+import { Task } from '../models/tasks'
 import Link from 'next/link'
+import { useUpdateTask } from '../hooks/useUpdateTask'
 
 interface Props {
   task: Task

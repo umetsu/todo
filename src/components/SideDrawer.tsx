@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useProfile, useUser } from './hooks'
+import { useUser } from '../hooks/auth/useUser'
 import {
   Avatar,
   Box,
@@ -14,19 +14,20 @@ import {
   Typography,
 } from '@material-ui/core'
 import { ExitToApp as ExitToAppIcon } from '@material-ui/icons'
+import { useSideDrawer } from '../hooks/useSideDrawer'
 
-export function ProfileDrawer() {
+export function SideDrawer() {
   const classes = useStyles()
   const { user, logout } = useUser()
-  const { profileOpened, closeProfile } = useProfile()
+  const { opened, closeSideDrawer } = useSideDrawer()
 
   const handleLogoutClick = useCallback(() => {
     void logout()
-    closeProfile()
-  }, [closeProfile, logout])
+    closeSideDrawer()
+  }, [closeSideDrawer, logout])
 
   return (
-    <Drawer open={profileOpened} anchor={'left'} onClose={closeProfile}>
+    <Drawer open={opened} anchor={'left'} onClose={closeSideDrawer}>
       <Box
         display={'flex'}
         flexDirection={'column'}
