@@ -1,8 +1,14 @@
 import React from 'react'
-import { render, screen, waitForLoadingToFinish } from '../utils/ui'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  waitForLoadingToFinish,
+} from '../utils/ui'
 import EditPage from '../../src/pages/edit/[taskId]'
 import { mocked } from 'ts-jest/utils'
-import { fetchTask } from '../../src/firebase/database'
+import { fetchTask, updateTask } from '../../src/firebase/database'
 import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
 
 jest.mock('next/router')
@@ -14,7 +20,7 @@ beforeEach(() => {
 })
 
 interface RenderOptions {
-  uid?: string
+  uid: string
   taskId: string
 }
 
@@ -28,15 +34,49 @@ async function renderEditPage({ uid, taskId }: RenderOptions) {
   await waitForLoadingToFinish()
 }
 
-test('編集ページの描画', async () => {
+test('編集ページの描画とタスクの編集', async () => {
+  const uid = '1234'
   const task = { id: '1', name: 'task1', completed: false }
+  const completedTask = { ...task, completed: true }
 
   const mockedFetchTask = mocked(fetchTask)
-  mockedFetchTask.mockResolvedValue(task)
+  mockedFetchTask
+    .mockResolvedValueOnce(task)
+    .mockResolvedValueOnce(completedTask)
+    .mockResolvedValueOnce(task)
 
-  await renderEditPage({ taskId: task.id })
+  const mockedUpdateTask = mocked(updateTask)
+  mockedUpdateTask
+    .mockResolvedValueOnce(completedTask)
+    .mockResolvedValueOnce(task)
 
-  expect(await screen.findByRole('checkbox')).not.toBeChecked()
-  expect(await screen.findByText('完了にする')).toBeInTheDocument()
-  expect(await screen.findByDisplayValue('task1')).toBeInTheDocument()
+  await renderEditPage({ uid, taskId: task.id })
+
+  // バックボタンの表示
+  expect(await screen.findByLabelText('back-button')).toBeInTheDocument()
+
+  // 完了状態の切り替え
+  userEvent.click(
+    await screen.findByRole('checkbox', { name: '完了にする', checked: false })
+  )
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, completedTask)
+  })
+
+  userEvent.click(
+    await screen.findByRole('checkbox', { name: '未完了に戻す', checked: true })
+  )
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, task)
+  })
+  expect(
+    await screen.findByRole('checkbox', { name: '完了にする', checked: false })
+  ).toBeInTheDocument()
+
+  // タスク名の編集
+  userEvent.type(await screen.findByDisplayValue('task1'), 'edit')
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, name: 'task1edit' })
+  })
+  expect(await screen.findByDisplayValue('task1edit')).toBeInTheDocument()
 })
