@@ -1,6 +1,7 @@
 import {
   Collapse,
   createStyles,
+  Divider,
   List,
   ListItem,
   ListItemText,
@@ -10,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import { useTasks } from './hooks'
+import { useTasks } from '../hooks/useTasks'
 
 export function TaskList() {
   const classes = useStyles()
@@ -31,7 +32,7 @@ export function TaskList() {
       ))}
       {showCompletedTasks && (
         <>
-          <hr />
+          <Divider />
           <ListItem button onClick={handleCollapseToggleClick}>
             <ListItemText className={classes.completedTask}>
               完了したタスク ({numOfCompletedTasks}件)

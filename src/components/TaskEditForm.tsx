@@ -8,13 +8,14 @@ import {
   TextField,
   Theme,
 } from '@material-ui/core'
-import { useTask, useUpdateTask } from './hooks'
+import { useTask } from '../hooks/useTask'
+import { useUpdateTask } from '../hooks/useUpdateTask'
 
-interface TaskEditFormProps {
+interface Props {
   taskId: string
 }
 
-export function TaskEditForm({ taskId }: TaskEditFormProps) {
+export function TaskEditForm({ taskId }: Props) {
   const { task } = useTask(taskId)
   const { changeCompleted, changeTaskName } = useUpdateTask(task)
   const classes = useStyles({ completed: task.completed })

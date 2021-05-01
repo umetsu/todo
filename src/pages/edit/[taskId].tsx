@@ -1,18 +1,25 @@
 import React from 'react'
-import { useRequireAuth } from '../../features/auth/useRequireAuth'
-import { FullPageSpinner } from '../../common/FullPageSpinner'
 import { useRouter } from 'next/router'
-import { TaskEditContent } from '../../features/tasks/TaskEditContent'
 import { ErrorBoundary } from 'react-error-boundary'
+import {
+  AppBar,
+  Box,
+  Container,
+  createStyles,
+  IconButton,
+  makeStyles,
+  Theme,
+  Toolbar,
+} from '@material-ui/core'
+import Link from 'next/link'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { FullPageSpinner } from '../../components/FullPageSpinner'
+import { TaskEditForm } from '../../components/TaskEditForm'
 
 export default function EditPage() {
-  const { loading } = useRequireAuth()
+  const classes = useStyles()
   const router = useRouter()
   const { taskId } = router.query
-
-  if (loading) {
-    return <FullPageSpinner />
-  }
 
   if (!taskId) {
     void router.replace('/')
@@ -24,7 +31,31 @@ export default function EditPage() {
       fallback={<div>エラーが発生しました</div>}
       onError={(error, info) => console.error(error, info)}
     >
-      <TaskEditContent taskId={taskId as string} />
+      <Box display={'flex'} flexDirection={'column'}>
+        <AppBar position="static" color={'transparent'} elevation={0}>
+          <Toolbar>
+            <Link href={'/'}>
+              <IconButton edge="start" color="inherit">
+                <ArrowBackIcon />
+              </IconButton>
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth={'md'} className={classes.container}>
+          <React.Suspense fallback={<FullPageSpinner />}>
+            <TaskEditForm taskId={taskId as string} />
+          </React.Suspense>
+        </Container>
+      </Box>
     </ErrorBoundary>
   )
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      height: '100%',
+      padding: theme.spacing(2),
+    },
+  })
+)

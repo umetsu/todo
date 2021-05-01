@@ -8,9 +8,10 @@ import {
   updateTask,
 } from '../../src/firebase/database'
 import userEvent from '@testing-library/user-event'
-import { Task } from '../../src/features/tasks/models'
+import { Task } from '../../src/models/tasks'
 import firebase from 'firebase'
 import { subscribeUser } from '../../src/firebase/auth'
+import { useRouter } from 'next/router'
 
 jest.mock('../../src/firebase/auth')
 const mockedSubscribeUser = mocked(subscribeUser)
@@ -19,6 +20,9 @@ jest.mock('../../src/firebase/database')
 const mockedFetchAllTasks = mocked(fetchAllTasks)
 const mockedCreateTask = mocked(createTask)
 const mockedUpdateTask = mocked(updateTask)
+
+jest.mock('next/router')
+const mockedUseRouter = mocked(useRouter)
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -41,6 +45,13 @@ const defaultOptions: Required<RenderOptions> = {
 async function renderTopPage(options: RenderOptions = defaultOptions) {
   // undefを許容しないように型変換
   const { uid = defaultOptions.uid, tasks = defaultOptions.tasks } = options
+
+  mockedUseRouter.mockReturnValue({
+    route: '',
+    pathname: '',
+    query: {},
+    asPath: '',
+  } as any)
 
   mockedSubscribeUser.mockImplementation(
     (onUserChange: (user: firebase.User | null) => void) => {
