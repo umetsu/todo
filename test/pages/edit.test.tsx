@@ -1,67 +1,82 @@
 import React from 'react'
-import { render, screen, waitForLoadingToFinish } from '../testUtils'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  waitForLoadingToFinish,
+} from '../utils/ui'
 import EditPage from '../../src/pages/edit/[taskId]'
 import { mocked } from 'ts-jest/utils'
-import { fetchTask } from '../../src/firebase/database'
-import { Task } from '../../src/models/tasks'
-import firebase from 'firebase'
-import { subscribeUser } from '../../src/firebase/auth'
-import { useRouter } from 'next/router'
-
-jest.mock('../../src/firebase/auth')
-const mockedSubscribeUser = mocked(subscribeUser)
-
-jest.mock('../../src/firebase/database')
-const mockedFetchTask = mocked(fetchTask)
+import { fetchTask, updateTask } from '../../src/firebase/database'
+import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
 
 jest.mock('next/router')
-const mockedUseRouter = mocked(useRouter)
+jest.mock('../../src/firebase/auth')
+jest.mock('../../src/firebase/database')
 
 beforeEach(() => {
   jest.clearAllMocks()
 })
 
 interface RenderOptions {
-  uid?: string
-  task?: Task
+  uid: string
+  taskId: string
 }
 
-const defaultOptions: Required<RenderOptions> = {
-  uid: '123',
-  task: { id: '1', name: 'task1', completed: false },
-}
+async function renderEditPage({ uid, taskId }: RenderOptions) {
+  mockUseRouter({ query: { taskId } })
 
-async function renderEditPage(options: RenderOptions = defaultOptions) {
-  // undefを許容しないように型変換
-  const { uid = defaultOptions.uid, task = defaultOptions.task } = options
-
-  mockedUseRouter.mockReturnValue({
-    route: '',
-    pathname: '',
-    query: { taskId: task.id },
-    asPath: '',
-  } as any)
-
-  mockedSubscribeUser.mockImplementation(
-    (onUserChange: (user: firebase.User | null) => void) => {
-      onUserChange({ uid } as any) // ひとまずuidだけがほしい
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return function unsubscribe() {}
-    }
-  )
-
-  mockedFetchTask.mockReturnValue(Promise.resolve(task))
+  mockSubscribeUser({ uid })
 
   render(<EditPage />)
 
   await waitForLoadingToFinish()
 }
 
-test('編集ページの描画', async () => {
+test('編集ページの描画とタスクの編集', async () => {
+  const uid = '1234'
   const task = { id: '1', name: 'task1', completed: false }
-  await renderEditPage({ task })
+  const completedTask = { ...task, completed: true }
 
-  expect(await screen.findByRole('checkbox')).not.toBeChecked()
-  expect(await screen.findByText('完了にする')).toBeInTheDocument()
-  expect(await screen.findByDisplayValue('task1')).toBeInTheDocument()
+  const mockedFetchTask = mocked(fetchTask)
+  mockedFetchTask
+    .mockResolvedValueOnce(task)
+    .mockResolvedValueOnce(completedTask)
+    .mockResolvedValueOnce(task)
+
+  const mockedUpdateTask = mocked(updateTask)
+  mockedUpdateTask
+    .mockResolvedValueOnce(completedTask)
+    .mockResolvedValueOnce(task)
+
+  await renderEditPage({ uid, taskId: task.id })
+
+  // バックボタンの表示
+  expect(await screen.findByLabelText('back-button')).toBeInTheDocument()
+
+  // 完了状態の切り替え
+  userEvent.click(
+    await screen.findByRole('checkbox', { name: '完了にする', checked: false })
+  )
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, completedTask)
+  })
+
+  userEvent.click(
+    await screen.findByRole('checkbox', { name: '未完了に戻す', checked: true })
+  )
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, task)
+  })
+  expect(
+    await screen.findByRole('checkbox', { name: '完了にする', checked: false })
+  ).toBeInTheDocument()
+
+  // タスク名の編集
+  userEvent.type(await screen.findByDisplayValue('task1'), 'edit')
+  await waitFor(() => {
+    expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, name: 'task1edit' })
+  })
+  expect(await screen.findByDisplayValue('task1edit')).toBeInTheDocument()
 })

@@ -1,7 +1,7 @@
 import firebase from './'
 
 export function subscribeUser(
-  onUserChange: (user: firebase.User | null) => void,
+  onUserChange: (user: firebase.UserInfo | null) => void,
   onError?: (error: firebase.auth.Error) => void
 ) {
   return firebase.auth().onAuthStateChanged((user) => {

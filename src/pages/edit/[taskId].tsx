@@ -35,7 +35,11 @@ export default function EditPage() {
         <AppBar position="static" color={'transparent'} elevation={0}>
           <Toolbar>
             <Link href={'/'}>
-              <IconButton edge="start" color="inherit">
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label={'back-button'}
+              >
                 <ArrowBackIcon />
               </IconButton>
             </Link>

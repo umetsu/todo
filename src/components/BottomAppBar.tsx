@@ -18,15 +18,21 @@ export function BottomAppBar() {
     <AppBar position={'static'}>
       <Toolbar>
         <CreateButton />
-        <IconButton edge={'start'} color={'inherit'} onClick={openSideDrawer}>
+        <IconButton
+          edge={'start'}
+          color={'inherit'}
+          onClick={openSideDrawer}
+          aria-label={'menu'}
+        >
           <MenuIcon />
         </IconButton>
         <div className={classes.space} />
         <IconButton
           edge={'end'}
           color={'inherit'}
-          onClick={openConfirmDialog}
           disabled={disabledTasksDeleteButton}
+          onClick={openConfirmDialog}
+          aria-label={'delete-tasks'}
         >
           <DeleteIcon />
         </IconButton>
