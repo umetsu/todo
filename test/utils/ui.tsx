@@ -5,8 +5,8 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import React from 'react'
-import { AppProviders } from '../src/components/AppProviders'
-import { createQueryClient } from '../src/utils/createQueryClient'
+import { AppProviders } from '../../src/components/AppProviders'
+import { createQueryClient } from '../../src/utils/createQueryClient'
 
 // RenderOptionsでもらうようにするか悩んだが、今の所テスト側でreact-queryのことを意識する必要無いのでここで定義することにした
 const queryClient = createQueryClient({
@@ -45,4 +45,4 @@ export function waitForLoadingToFinish() {
 }
 
 export * from '@testing-library/react'
-export * from '@testing-library/user-event'
+export { default as userEvent } from '@testing-library/user-event'

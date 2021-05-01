@@ -1,5 +1,11 @@
 import React from 'react'
-import { render, screen, waitFor, waitForLoadingToFinish } from '../testUtils'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  waitForLoadingToFinish,
+} from '../utils/ui'
 import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
 import {
@@ -7,22 +13,12 @@ import {
   fetchAllTasks,
   updateTask,
 } from '../../src/firebase/database'
-import userEvent from '@testing-library/user-event'
 import { Task } from '../../src/models/tasks'
-import firebase from 'firebase'
-import { subscribeUser } from '../../src/firebase/auth'
-import { useRouter } from 'next/router'
-
-jest.mock('../../src/firebase/auth')
-const mockedSubscribeUser = mocked(subscribeUser)
-
-jest.mock('../../src/firebase/database')
-const mockedFetchAllTasks = mocked(fetchAllTasks)
-const mockedCreateTask = mocked(createTask)
-const mockedUpdateTask = mocked(updateTask)
+import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
 
 jest.mock('next/router')
-const mockedUseRouter = mocked(useRouter)
+jest.mock('../../src/firebase/auth')
+jest.mock('../../src/firebase/database')
 
 beforeEach(() => {
   jest.clearAllMocks()
@@ -32,28 +28,10 @@ interface RenderOptions {
   uid?: string
 }
 
-const defaultOptions: Required<RenderOptions> = {
-  uid: '123',
-}
+async function renderTopPage({ uid }: RenderOptions = {}) {
+  mockUseRouter()
 
-async function renderTopPage(options: RenderOptions = defaultOptions) {
-  // undefを許容しないように型変換
-  const { uid = defaultOptions.uid } = options
-
-  mockedUseRouter.mockReturnValue({
-    route: '',
-    pathname: '',
-    query: {},
-    asPath: '',
-  } as any)
-
-  mockedSubscribeUser.mockImplementation(
-    (onUserChange: (user: firebase.User | null) => void) => {
-      onUserChange({ uid } as any) // ひとまずuidだけがほしい
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return function unsubscribe() {}
-    }
-  )
+  mockSubscribeUser({ uid })
 
   render(<TopPage />)
 
@@ -66,6 +44,7 @@ test('トップページの描画', async () => {
     { id: '2', name: 'task2', completed: false },
     { id: '3', name: 'task3', completed: false },
   ]
+  const mockedFetchAllTasks = mocked(fetchAllTasks)
   mockedFetchAllTasks.mockResolvedValue(
     Object.fromEntries(
       tasks.map<[string, Task]>((t) => [t.id, t])
@@ -84,10 +63,12 @@ test('タスクの追加', async () => {
   const uid = '123'
   const newTask: Task = { id: 'test-id', name: 'new task', completed: false }
 
+  const mockedFetchAllTasks = mocked(fetchAllTasks)
   mockedFetchAllTasks
     .mockResolvedValue({ 'test-id': newTask })
     .mockResolvedValueOnce({})
 
+  const mockedCreateTask = mocked(createTask)
   mockedCreateTask.mockResolvedValue(newTask)
 
   await renderTopPage({ uid })
@@ -113,12 +94,14 @@ test('完了状態の切り替え', async () => {
   const uid = '456'
   const task = { id: '1', name: 'task1', completed: false }
 
+  const mockedFetchAllTasks = mocked(fetchAllTasks)
   mockedFetchAllTasks
     .mockResolvedValue({
       [task.id]: { ...task, completed: true },
     })
     .mockResolvedValueOnce({ [task.id]: task })
 
+  const mockedUpdateTask = mocked(updateTask)
   mockedUpdateTask.mockResolvedValue({
     ...task,
     completed: true,
