@@ -16,14 +16,23 @@ export function useUpdateTask(task: Task) {
   >((task) => requestUpdateTask(uid, task), {
     onMutate: async (newTask) => {
       const taskQueryKey = ['task', { taskId: task.id }]
+
+      await queryClient.cancelQueries('tasks')
       await queryClient.cancelQueries(taskQueryKey)
+
       const previousTask = queryClient.getQueryData<Task>(taskQueryKey)
+
       updateCache(queryClient, newTask)
+
       return { previousTask }
     },
     onError: (error, variables, context) => {
       if (!context?.previousTask) return
       updateCache(queryClient, context.previousTask)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries('tasks')
+      queryClient.invalidateQueries(['task', { taskId: task.id }])
     },
   })
 

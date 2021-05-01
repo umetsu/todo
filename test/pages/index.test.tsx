@@ -30,21 +30,15 @@ beforeEach(() => {
 
 interface RenderOptions {
   uid?: string
-  tasks?: ReadonlyArray<Task>
 }
 
 const defaultOptions: Required<RenderOptions> = {
   uid: '123',
-  tasks: [
-    { id: '1', name: 'task1', completed: false },
-    { id: '2', name: 'task2', completed: false },
-    { id: '3', name: 'task3', completed: false },
-  ],
 }
 
 async function renderTopPage(options: RenderOptions = defaultOptions) {
   // undefを許容しないように型変換
-  const { uid = defaultOptions.uid, tasks = defaultOptions.tasks } = options
+  const { uid = defaultOptions.uid } = options
 
   mockedUseRouter.mockReturnValue({
     route: '',
@@ -61,20 +55,23 @@ async function renderTopPage(options: RenderOptions = defaultOptions) {
     }
   )
 
-  mockedFetchAllTasks.mockReturnValue(
-    Promise.resolve(
-      Object.fromEntries(
-        tasks.map<[string, Task]>((t) => [t.id, t])
-      )
-    )
-  )
-
   render(<TopPage />)
 
   await waitForLoadingToFinish()
 }
 
 test('トップページの描画', async () => {
+  const tasks = [
+    { id: '1', name: 'task1', completed: false },
+    { id: '2', name: 'task2', completed: false },
+    { id: '3', name: 'task3', completed: false },
+  ]
+  mockedFetchAllTasks.mockResolvedValue(
+    Object.fromEntries(
+      tasks.map<[string, Task]>((t) => [t.id, t])
+    )
+  )
+
   await renderTopPage()
 
   expect(mockedFetchAllTasks).toBeCalledTimes(1)
@@ -85,28 +82,30 @@ test('トップページの描画', async () => {
 
 test('タスクの追加', async () => {
   const uid = '123'
-  const newTaskName = 'new task'
+  const newTask: Task = { id: 'test-id', name: 'new task', completed: false }
 
-  mockedCreateTask.mockReturnValue(
-    Promise.resolve({ id: 'test-id', name: newTaskName, completed: false })
-  )
+  mockedFetchAllTasks
+    .mockResolvedValue({ 'test-id': newTask })
+    .mockResolvedValueOnce({})
 
-  await renderTopPage({ uid, tasks: [] })
+  mockedCreateTask.mockResolvedValue(newTask)
+
+  await renderTopPage({ uid })
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 
   userEvent.click(await screen.findByLabelText('create-task'))
-  userEvent.type(await screen.findByRole('textbox'), newTaskName)
+  userEvent.type(await screen.findByRole('textbox'), newTask.name)
   userEvent.click(await screen.findByRole('button', { name: '追加' }))
 
   await waitFor(() => {
     expect(mockedCreateTask).toBeCalledTimes(1)
   })
-  expect(mockedCreateTask).toHaveBeenCalledWith(uid, newTaskName)
+  expect(mockedCreateTask).toHaveBeenCalledWith(uid, newTask.name)
 
   expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
 
-  expect(await screen.findByText(newTaskName)).toBeInTheDocument()
+  expect(await screen.findByText(newTask.name)).toBeInTheDocument()
   expect(await screen.findByRole('checkbox')).not.toBeChecked()
 })
 
@@ -114,14 +113,18 @@ test('完了状態の切り替え', async () => {
   const uid = '456'
   const task = { id: '1', name: 'task1', completed: false }
 
-  mockedUpdateTask.mockReturnValue(
-    Promise.resolve({
-      ...task,
-      completed: true,
+  mockedFetchAllTasks
+    .mockResolvedValue({
+      [task.id]: { ...task, completed: true },
     })
-  )
+    .mockResolvedValueOnce({ [task.id]: task })
 
-  await renderTopPage({ uid, tasks: [task] })
+  mockedUpdateTask.mockResolvedValue({
+    ...task,
+    completed: true,
+  })
+
+  await renderTopPage({ uid })
 
   // 初期状態の確認
   expect(screen.queryByText('完了したタスク (0件)')).not.toBeInTheDocument()
