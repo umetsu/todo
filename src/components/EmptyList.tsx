@@ -2,15 +2,6 @@ import React from 'react'
 import { Cat } from 'react-kawaii'
 import { Box, Typography } from '@material-ui/core'
 
-/*
-* 'sad'
-  | 'shocked'
-  | 'happy'
-  | 'blissful'
-  | 'lovestruck'
-  | 'excited'
-  | 'ko';*/
-
 export function EmptyList() {
   return (
     <Box
