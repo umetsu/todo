@@ -24,24 +24,24 @@ export default function TopPage() {
       fallback={<div>エラーが発生しました</div>}
       onError={console.error}
     >
-      <SideDrawer />
-      <Box display={'flex'} flexDirection={'column'} className={classes.box}>
-        <AppBar position="static" color={'transparent'} elevation={0}>
-          <Toolbar>
-            <Typography variant={'h6'} noWrap>
-              Todo
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Container maxWidth={'md'} className={classes.container}>
-          <React.Suspense fallback={<FullPageSpinner />}>
+      <React.Suspense fallback={<FullPageSpinner />}>
+        <Box display={'flex'} flexDirection={'column'} className={classes.box}>
+          <AppBar position="static" color={'transparent'} elevation={0}>
+            <Toolbar>
+              <Typography variant={'h6'} noWrap>
+                Todo
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Container maxWidth={'md'} className={classes.container}>
             <TaskList />
-          </React.Suspense>
-          <TaskCreateForm />
-        </Container>
-        <BottomAppBar />
-      </Box>
-      <DeleteAllCompletedTasksConfirmDialog />
+          </Container>
+          <BottomAppBar />
+        </Box>
+        <SideDrawer />
+        <TaskCreateForm />
+        <DeleteAllCompletedTasksConfirmDialog />
+      </React.Suspense>
     </ErrorBoundary>
   )
 }

@@ -4,11 +4,15 @@ import { CreateButton } from './CreateButton'
 import { Delete as DeleteIcon, Menu as MenuIcon } from '@material-ui/icons'
 import { useSideDrawer } from '../hooks/useSideDrawer'
 import { useDeleteAllCompletedTasksConfirmDialog } from '../hooks/useDeleteAllCompletedTasksConfirmDialog'
+import { useTasks } from '../hooks/useTasks'
 
 export function BottomAppBar() {
   const classes = useStyles()
+  const { completedTasks } = useTasks()
   const { openSideDrawer } = useSideDrawer()
   const { openConfirmDialog } = useDeleteAllCompletedTasksConfirmDialog()
+
+  const disabledTasksDeleteButton = completedTasks.length === 0
 
   return (
     <AppBar position={'static'}>
@@ -18,7 +22,12 @@ export function BottomAppBar() {
           <MenuIcon />
         </IconButton>
         <div className={classes.space} />
-        <IconButton edge={'end'} color={'inherit'} onClick={openConfirmDialog}>
+        <IconButton
+          edge={'end'}
+          color={'inherit'}
+          onClick={openConfirmDialog}
+          disabled={disabledTasksDeleteButton}
+        >
           <DeleteIcon />
         </IconButton>
       </Toolbar>

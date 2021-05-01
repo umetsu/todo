@@ -9,23 +9,23 @@ import {
 } from '@material-ui/core'
 import { useDeleteAllCompletedTasks } from '../hooks/useDeleteAllCompletedTasks'
 import { useDeleteAllCompletedTasksConfirmDialog } from '../hooks/useDeleteAllCompletedTasksConfirmDialog'
+import { useTasks } from '../hooks/useTasks'
 
 export function DeleteAllCompletedTasksConfirmDialog() {
+  const { completedTasks } = useTasks()
   const {
     opened,
     closeConfirmDialog,
   } = useDeleteAllCompletedTasksConfirmDialog()
   const { deleteAllCompletedTasks } = useDeleteAllCompletedTasks()
-  // TODO: 完了済みタスクの件数を取得
-  const numOfCompletedTasks = 0
+  const numOfCompletedTasks = completedTasks.length
 
   const handleCancel = useCallback(() => {
     closeConfirmDialog()
   }, [closeConfirmDialog])
 
   const handleDelete = useCallback(() => {
-    // TODO: 完了済みタスクを渡す
-    deleteAllCompletedTasks([])
+    deleteAllCompletedTasks(completedTasks)
     closeConfirmDialog()
   }, [closeConfirmDialog, deleteAllCompletedTasks])
 
@@ -35,7 +35,7 @@ export function DeleteAllCompletedTasksConfirmDialog() {
       <DialogContent>
         <DialogContentText>
           完了済みになっている{numOfCompletedTasks}
-          件のタスクを全て削除します。よろしいですか？
+          件のタスクを削除します。よろしいですか？
         </DialogContentText>
       </DialogContent>
       <DialogActions>
