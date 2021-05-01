@@ -5,6 +5,7 @@ import {
   userEvent,
   waitFor,
   waitForLoadingToFinish,
+  waitForElementToBeRemoved,
 } from '../utils/ui'
 import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
@@ -42,7 +43,7 @@ test('トップページの描画', async () => {
   const tasks = [
     { id: '1', name: 'task1', completed: false },
     { id: '2', name: 'task2', completed: false },
-    { id: '3', name: 'task3', completed: false },
+    { id: '3', name: 'task3', completed: true },
   ]
   const mockedFetchAllTasks = mocked(fetchAllTasks)
   mockedFetchAllTasks.mockResolvedValue(
@@ -55,8 +56,35 @@ test('トップページの描画', async () => {
 
   expect(mockedFetchAllTasks).toBeCalledTimes(1)
 
+  // ヘッダー
   expect(await screen.findByText(/todo/i)).toBeInTheDocument()
-  expect(await screen.findAllByLabelText(/task-item/i)).toHaveLength(3)
+
+  // タスクの一覧
+  expect(
+    await screen.findAllByRole('checkbox', { checked: false })
+  ).toHaveLength(2)
+  expect(await screen.findByText('task1')).toBeInTheDocument()
+  expect(await screen.findByText('task2')).toBeInTheDocument()
+
+  userEvent.click(await screen.findByText('完了したタスク (1件)'))
+  expect(
+    await screen.findByRole('checkbox', { checked: true })
+  ).toBeInTheDocument()
+  expect(await screen.findByText('task2')).toBeInTheDocument()
+
+  // 削除ボタン
+  expect(await screen.findByLabelText('delete-tasks')).not.toBeDisabled()
+
+  // サイドバー表示・非表示
+  expect(screen.queryByLabelText('avatar')).not.toBeInTheDocument()
+
+  userEvent.click(await screen.findByLabelText('menu'))
+  expect(await screen.findByLabelText('avatar')).toBeInTheDocument()
+  expect(await screen.findByText('Tanaka Taro')).toBeInTheDocument()
+  expect(await screen.findByText('ログアウト')).toBeInTheDocument()
+
+  userEvent.click(await screen.findByLabelText('backdrop'))
+  await waitForElementToBeRemoved(screen.queryByLabelText('avatar'))
 })
 
 test('タスクの追加', async () => {

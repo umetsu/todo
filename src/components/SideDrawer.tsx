@@ -27,7 +27,16 @@ export function SideDrawer() {
   }, [closeSideDrawer, logout])
 
   return (
-    <Drawer open={opened} anchor={'left'} onClose={closeSideDrawer}>
+    <Drawer
+      open={opened}
+      anchor={'left'}
+      onClose={closeSideDrawer}
+      ModalProps={{
+        BackdropProps: {
+          'aria-label': 'backdrop',
+        },
+      }}
+    >
       <Box
         display={'flex'}
         flexDirection={'column'}
@@ -43,6 +52,7 @@ export function SideDrawer() {
             src={user?.photoURL ?? undefined}
             alt={user?.displayName ?? undefined}
             className={classes.avatar}
+            aria-label={'avatar'}
           />
           <Typography variant={'h6'} className={classes.userName}>
             {user?.displayName}
