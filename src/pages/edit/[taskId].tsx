@@ -12,6 +12,7 @@ import { FullPageSpinner } from '../../components/FullPageSpinner'
 import { TaskEditForm } from '../../components/TaskEditForm'
 import { ApplicationBar } from '../../components/ApplicationBar'
 import { DeleteTaskConfirmDialog } from '../../components/DeleteTaskConfirmDialog'
+import { ErrorFallback } from '../../components/ErrorFallback'
 
 export default function EditPage() {
   const classes = useStyles()
@@ -27,8 +28,8 @@ export default function EditPage() {
 
   return (
     <ErrorBoundary
-      fallback={<div>エラーが発生しました</div>}
-      onError={(error, info) => console.error(error, info)}
+      fallbackRender={({ error }) => <ErrorFallback message={error.message} />}
+      onError={console.error}
     >
       <React.Suspense fallback={<FullPageSpinner />}>
         <Box display={'flex'} flexDirection={'column'}>
