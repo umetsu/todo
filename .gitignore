@@ -287,3 +287,14 @@ storybook-static
 
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,osx,linux,node,jetbrains
+
+**/public/precache.*.*.js
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/fallback-*.js
+**/public/precache.*.*.js.map
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+**/public/fallback-*.js
