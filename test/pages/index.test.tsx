@@ -11,6 +11,7 @@ import TopPage from '../../src/pages'
 import { mocked } from 'ts-jest/utils'
 import {
   createTask,
+  deleteTasks,
   fetchAllTasks,
   updateTask,
 } from '../../src/firebase/database'
@@ -45,11 +46,8 @@ test('トップページの描画', async () => {
     { id: '2', name: 'task2', completed: false },
     { id: '3', name: 'task3', completed: true },
   ]
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks.mockResolvedValue(
-    Object.fromEntries(
-      tasks.map<[string, Task]>((t) => [t.id, t])
-    )
+  const mockedFetchAllTasks = mocked(fetchAllTasks).mockResolvedValueOnce(
+    tasksByIdFromTaskArray(tasks)
   )
 
   await renderTopPage()
@@ -91,13 +89,11 @@ test('タスクの追加', async () => {
   const uid = '123'
   const newTask: Task = { id: 'test-id', name: 'new task', completed: false }
 
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks
-    .mockResolvedValue({ 'test-id': newTask })
+  mocked(fetchAllTasks)
     .mockResolvedValueOnce({})
+    .mockResolvedValueOnce({ 'test-id': newTask })
 
-  const mockedCreateTask = mocked(createTask)
-  mockedCreateTask.mockResolvedValue(newTask)
+  const mockedCreateTask = mocked(createTask).mockResolvedValueOnce(newTask)
 
   await renderTopPage({ uid })
 
@@ -122,15 +118,13 @@ test('完了状態の切り替え', async () => {
   const uid = '456'
   const task = { id: '1', name: 'task1', completed: false }
 
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks
-    .mockResolvedValue({
+  mocked(fetchAllTasks)
+    .mockResolvedValueOnce({ [task.id]: task })
+    .mockResolvedValueOnce({
       [task.id]: { ...task, completed: true },
     })
-    .mockResolvedValueOnce({ [task.id]: task })
 
-  const mockedUpdateTask = mocked(updateTask)
-  mockedUpdateTask.mockResolvedValue({
+  const mockedUpdateTask = mocked(updateTask).mockResolvedValueOnce({
     ...task,
     completed: true,
   })
@@ -155,3 +149,46 @@ test('完了状態の切り替え', async () => {
   // チェックが入っているか
   expect(await screen.findByRole('checkbox')).toBeChecked()
 })
+
+test('完了済みタスクの削除', async () => {
+  const uid = '456'
+  const uncompletedTasks = [{ id: '1', name: 'task1', completed: false }]
+  const completedTasks = [
+    { id: '2', name: 'task2', completed: true },
+    { id: '3', name: 'task3', completed: true },
+  ]
+  const allTasks = [...uncompletedTasks, ...completedTasks]
+  mocked(fetchAllTasks)
+    .mockResolvedValueOnce(tasksByIdFromTaskArray(allTasks))
+    .mockResolvedValueOnce(tasksByIdFromTaskArray(uncompletedTasks))
+  const mockedDeleteTasks = mocked(deleteTasks)
+
+  await renderTopPage({ uid })
+
+  // 削除前の件数確認
+  userEvent.click(await screen.findByText('完了したタスク (2件)'))
+  expect(await screen.findAllByLabelText('task-item')).toHaveLength(3)
+
+  // 削除確認モーダルの表示
+  userEvent.click(await screen.findByRole('button', { name: 'delete-tasks' }))
+  expect(await screen.findByText('完了済みのタスクの削除')).toBeInTheDocument()
+  userEvent.click(await screen.findByRole('button', { name: '削除' }))
+
+  // APIが呼ばれているか
+  await waitFor(() => {
+    expect(mockedDeleteTasks).toBeCalledTimes(1)
+  })
+  expect(mockedDeleteTasks).toBeCalledWith(uid, completedTasks.reverse())
+
+  // 削除後の件数確認
+  expect(screen.queryByText('完了したタスク (0件)')).not.toBeInTheDocument()
+  expect(await screen.findAllByLabelText('task-item')).toHaveLength(1)
+})
+
+function tasksByIdFromTaskArray(
+  tasks: ReadonlyArray<Task>
+): { [id: string]: Task } {
+  return Object.fromEntries(
+    tasks.map<[string, Task]>((t) => [t.id, t])
+  )
+}

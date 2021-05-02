@@ -3527,7 +3527,7 @@ firebase@8.3.2:
     "@firebase/storage" "0.4.6"
     "@firebase/util" "0.4.1"
 
-firebaseui-ja@^1.0.0:
+firebaseui-ja@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/firebaseui-ja/-/firebaseui-ja-1.0.0.tgz#404b02779ecfea8a7109b5cfc0615019d712e805"
   integrity sha512-mAnLnyleYZVcEP9PDejWa1iGQZxqwEnesMJcR2lecUASF/Th5uBMpsMBC5jxNevb0Gj85D39TXCKbmL82gf5CQ==
@@ -7651,7 +7651,7 @@ webidl-conversions@^6.1.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-6.1.0.tgz#9111b4d7ea80acd40f5270d666621afa78b69514"
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
-webpack-merge@^5.7.3:
+webpack-merge@5.7.3:
   version "5.7.3"
   resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-5.7.3.tgz#2a0754e1877a25a8bbab3d2475ca70a052708213"
   integrity sha512-6/JUQv0ELQ1igjGDzHkXbVDRxkfA57Zw7PfiupdLFJYrgFqY5ZP8xxbpp2lU3EPwYx89ht5Z/aDkD40hFCm5AA==

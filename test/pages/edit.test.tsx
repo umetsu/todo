@@ -8,7 +8,7 @@ import {
 } from '../utils/ui'
 import EditPage from '../../src/pages/edit/[taskId]'
 import { mocked } from 'ts-jest/utils'
-import { fetchTask, updateTask } from '../../src/firebase/database'
+import { deleteTasks, fetchTask, updateTask } from '../../src/firebase/database'
 import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
 
 jest.mock('next/router')
@@ -39,8 +39,7 @@ test('編集ページの描画とタスクの編集', async () => {
   const task = { id: '1', name: 'task1', completed: false }
   const completedTask = { ...task, completed: true }
 
-  const mockedFetchTask = mocked(fetchTask)
-  mockedFetchTask
+  mocked(fetchTask)
     .mockResolvedValueOnce(task)
     .mockResolvedValueOnce(completedTask)
     .mockResolvedValueOnce(task)
@@ -79,4 +78,24 @@ test('編集ページの描画とタスクの編集', async () => {
     expect(mockedUpdateTask).toBeCalledWith(uid, { ...task, name: 'task1edit' })
   })
   expect(await screen.findByDisplayValue('task1edit')).toBeInTheDocument()
+})
+
+test('タスクの削除', async () => {
+  const uid = '1234'
+  const task = { id: '1', name: 'task1', completed: false }
+
+  mocked(fetchTask).mockResolvedValueOnce(task)
+
+  const mockedDeleteTasks = mocked(deleteTasks)
+
+  await renderEditPage({ uid, taskId: task.id })
+
+  userEvent.click(await screen.findByRole('button', { name: 'delete-task' }))
+  expect(await screen.findByText('タスクの削除'))
+  userEvent.click(await screen.findByRole('button', { name: '削除' }))
+
+  await waitFor(() => {
+    expect(mockedDeleteTasks).toBeCalledTimes(1)
+  })
+  expect(mockedDeleteTasks).toBeCalledWith(uid, [task])
 })
