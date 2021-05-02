@@ -29,12 +29,18 @@ export function TaskCreateForm({ open, onClose, onCreateTask }: Props) {
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       onCreateTask(inputTaskName)
+      setInputTaskName('')
     },
     [inputTaskName, onCreateTask]
   )
 
+  const handleClose = useCallback(() => {
+    onClose()
+    setInputTaskName('')
+  }, [onClose])
+
   return (
-    <Drawer anchor={'bottom'} open={open} onClose={onClose}>
+    <Drawer anchor={'bottom'} open={open} onClose={handleClose}>
       <form onSubmit={handleSubmit}>
         <div className={classes.container}>
           <InputBase
