@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useOpenClose } from './utils/useOpenClose'
+import { useOpenClose } from '../../common/hooks/useOpenClose'
 
 export function useTaskCreateForm() {
   const { isOpened, open, close } = useOpenClose('taskCreateForm')

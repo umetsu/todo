@@ -1,7 +1,7 @@
 import { useSetRecoilState } from 'recoil'
-import { useSafeUpdate } from '../utils/useSafeUpdate'
+import { useSafeUpdate } from '../../common/hooks/useSafeUpdate'
 import { useEffect } from 'react'
-import { subscribeUser } from '../../firebase/auth'
+import { subscribeUser } from '../../../firebase/auth'
 import { userAtom } from './atoms'
 
 export function useAuthCheck() {

@@ -8,16 +8,16 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { Task } from '../../models/tasks'
+import { Task } from '../models'
 import Link from 'next/link'
-import { useUpdateTask } from '../../hooks/useUpdateTask'
+import { useChangeCompleted } from '../hooks/useChangeCompleted'
 
 interface Props {
   task: Task
 }
 
 export function TaskItem({ task }: Props) {
-  const { changeCompleted } = useUpdateTask(task)
+  const { changeCompleted } = useChangeCompleted(task)
   const classes = useStyles({ completed: task.completed })
 
   const handleChange = useCallback(

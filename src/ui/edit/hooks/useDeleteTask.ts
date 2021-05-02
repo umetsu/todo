@@ -1,7 +1,7 @@
-import { useUser } from './auth/useUser'
+import { useUser } from '../../auth/hooks/useUser'
 import { useMutation, useQueryClient } from 'react-query'
-import { Task } from '../models/tasks'
-import { deleteTasks as requestDeleteTasks } from '../firebase/database'
+import { Task } from '../models'
+import { deleteTasks as requestDeleteTasks } from '../../../firebase/database'
 import { useCallback } from 'react'
 
 export function useDeleteTask() {

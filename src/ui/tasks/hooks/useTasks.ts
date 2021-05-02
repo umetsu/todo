@@ -1,7 +1,7 @@
 import { QueryClient, useQuery, useQueryClient } from 'react-query'
-import { useUser } from './auth/useUser'
-import { Task } from '../models/tasks'
-import { fetchAllTasks } from '../firebase/database'
+import { useUser } from '../../auth/hooks/useUser'
+import { Task } from '../models'
+import { fetchAllTasks } from '../../../firebase/database'
 
 export function useTasks() {
   const queryClient = useQueryClient()

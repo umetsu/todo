@@ -1,4 +1,4 @@
-import { useOpenClose } from './utils/useOpenClose'
+import { useOpenClose } from '../../common/hooks/useOpenClose'
 
 export function useDeleteAllCompletedTasksConfirmDialog() {
   const { isOpened, open, close } = useOpenClose(

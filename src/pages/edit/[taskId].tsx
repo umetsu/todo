@@ -9,16 +9,16 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { FullPageSpinner } from '../../components/common/FullPageSpinner'
-import { TaskEditForm } from '../../components/edit/TaskEditForm'
-import { ApplicationBar } from '../../components/common/ApplicationBar'
-import { DeleteTaskConfirmDialog } from '../../components/edit/DeleteTaskConfirmDialog'
-import { ErrorFallback } from '../../components/common/ErrorFallback'
+import { FullPageSpinner } from '../../ui/common/components/FullPageSpinner'
+import { TaskEditForm } from '../../ui/edit/components/TaskEditForm'
+import { ApplicationBar } from '../../ui/common/components/ApplicationBar'
+import { DeleteTaskConfirmDialog } from '../../ui/edit/components/DeleteTaskConfirmDialog'
+import { ErrorFallback } from '../../ui/common/components/ErrorFallback'
 import { Delete as DeleteIcon } from '@material-ui/icons'
-import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
-import { useTask } from '../../hooks/useTask'
-import { useDeleteTask } from '../../hooks/useDeleteTask'
-import { useUpdateTask } from '../../hooks/useUpdateTask'
+import { useDeleteTaskConfirmDialog } from '../../ui/edit/hooks/useDeleteTaskConfirmDialog'
+import { useTask } from '../../ui/edit/hooks/useTask'
+import { useDeleteTask } from '../../ui/edit/hooks/useDeleteTask'
+import { useUpdateTask } from '../../ui/edit/hooks/useUpdateTask'
 
 export default function EditPageWithProviders() {
   const router = useRouter()

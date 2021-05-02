@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import React from 'react'
 import '../styles/global.css'
-import { AppProviders } from '../components/common/AppProviders'
+import { AppProviders } from '../ui/common/components/AppProviders'
 import Head from 'next/head'
 import { createQueryClient } from '../utils/createQueryClient'
 

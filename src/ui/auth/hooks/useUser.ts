@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil'
 import { useCallback } from 'react'
-import { logout as requestLogout } from '../../firebase/auth'
+import { logout as requestLogout } from '../../../firebase/auth'
 import { userAtom } from './atoms'
 
 export function useUser() {

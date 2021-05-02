@@ -15,7 +15,7 @@ import {
   fetchAllTasks,
   updateTask,
 } from '../../src/firebase/database'
-import { Task } from '../../src/models/tasks'
+import { Task } from '../../src/ui/tasks/models'
 import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
 
 jest.mock('next/router')

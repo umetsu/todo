@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { ExitToApp as ExitToAppIcon } from '@material-ui/icons'
-import { User } from '../../models/auth'
+import { User } from '../../auth/models'
 
 interface Props {
   open: boolean

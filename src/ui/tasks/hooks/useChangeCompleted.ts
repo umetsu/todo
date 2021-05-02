@@ -1,10 +1,10 @@
-import { Task } from '../models/tasks'
-import { useUser } from './auth/useUser'
+import { Task } from '../models'
+import { useUser } from '../../auth/hooks/useUser'
 import { QueryClient, useMutation, useQueryClient } from 'react-query'
-import { updateTask as requestUpdateTask } from '../firebase/database'
+import { updateTask as requestUpdateTask } from '../../../firebase/database'
 import { useCallback } from 'react'
 
-export function useUpdateTask(task: Task) {
+export function useChangeCompleted(task: Task) {
   const { uid } = useUser()
   const queryClient = useQueryClient()
 
@@ -30,9 +30,9 @@ export function useUpdateTask(task: Task) {
       if (!context?.previousTask) return
       updateCache(queryClient, context.previousTask)
     },
-    onSettled: () => {
-      queryClient.invalidateQueries('tasks')
-      queryClient.invalidateQueries(['task', { taskId: task.id }])
+    onSettled: async () => {
+      await queryClient.invalidateQueries('tasks')
+      await queryClient.invalidateQueries(['task', { taskId: task.id }])
     },
   })
 
@@ -43,16 +43,8 @@ export function useUpdateTask(task: Task) {
     [updateTaskMutation, task]
   )
 
-  const changeTaskName = useCallback(
-    (taskName: string) => {
-      updateTaskMutation({ ...task, name: taskName })
-    },
-    [updateTaskMutation, task]
-  )
-
   return {
     changeCompleted,
-    changeTaskName,
   }
 }
 

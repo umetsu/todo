@@ -8,7 +8,7 @@ import {
   TextField,
   Theme,
 } from '@material-ui/core'
-import { Task } from '../../models/tasks'
+import { Task } from '../models'
 
 interface Props {
   task: Task

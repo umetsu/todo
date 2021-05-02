@@ -12,7 +12,7 @@ import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { EmptyList } from './EmptyList'
-import { Task } from '../../models/tasks'
+import { Task } from '../models'
 
 interface Props {
   uncompletedTasks: ReadonlyArray<Task>

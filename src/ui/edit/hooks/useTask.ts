@@ -1,7 +1,7 @@
-import { Task } from '../models/tasks'
-import { useUser } from './auth/useUser'
+import { Task } from '../models'
+import { useUser } from '../../auth/hooks/useUser'
 import { useQuery } from 'react-query'
-import { fetchTask } from '../firebase/database'
+import { fetchTask } from '../../../firebase/database'
 
 const loadingTask: Task = {
   id: '',
