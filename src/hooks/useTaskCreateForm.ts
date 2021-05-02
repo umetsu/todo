@@ -1,8 +1,7 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useOpenClose } from './utils/useOpenClose'
 
 export function useTaskCreateForm() {
-  const [inputTaskName, setInputTaskName] = useState('')
   const { isOpened, open, close } = useOpenClose('taskCreateForm')
 
   const openCreateTaskForm = useCallback(() => {
@@ -11,18 +10,11 @@ export function useTaskCreateForm() {
 
   const closeCreateTaskForm = useCallback(() => {
     close()
-    setInputTaskName('')
   }, [close])
-
-  const changeInputTaskName = useCallback((input: string) => {
-    setInputTaskName(input)
-  }, [])
 
   return {
     taskCreateFormOpened: isOpened,
-    inputTaskName,
     openCreateTaskForm,
     closeCreateTaskForm,
-    changeInputTaskName,
   }
 }

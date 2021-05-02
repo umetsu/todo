@@ -1,18 +1,20 @@
 import React from 'react'
 import { Fab, makeStyles, Zoom } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { useTaskCreateForm } from '../../hooks/useTaskCreateForm'
 
-export function CreateButton() {
+interface Props {
+  onClick: () => void
+}
+
+export function CreateButton({ onClick }: Props) {
   const classes = useStyles()
-  const { openCreateTaskForm } = useTaskCreateForm()
 
   return (
     <Zoom in>
       <Fab
         color={'secondary'}
         aria-label={'create-task'}
-        onClick={openCreateTaskForm}
+        onClick={onClick}
         className={classes.fab}
       >
         <AddIcon />

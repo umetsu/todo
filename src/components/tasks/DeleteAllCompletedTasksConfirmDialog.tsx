@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import {
   Button,
   Dialog,
@@ -7,30 +7,22 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
-import { useDeleteAllCompletedTasks } from '../../hooks/useDeleteAllCompletedTasks'
-import { useDeleteAllCompletedTasksConfirmDialog } from '../../hooks/useDeleteAllCompletedTasksConfirmDialog'
-import { useTasks } from '../../hooks/useTasks'
 
-export function DeleteAllCompletedTasksConfirmDialog() {
-  const { completedTasks } = useTasks()
-  const {
-    opened,
-    closeConfirmDialog,
-  } = useDeleteAllCompletedTasksConfirmDialog()
-  const { deleteAllCompletedTasks } = useDeleteAllCompletedTasks()
-  const numOfCompletedTasks = completedTasks.length
+interface Props {
+  open: boolean
+  numOfCompletedTasks: number
+  onClose: () => void
+  onDeleteTasksClick: () => void
+}
 
-  const handleCancel = useCallback(() => {
-    closeConfirmDialog()
-  }, [closeConfirmDialog])
-
-  const handleDelete = useCallback(() => {
-    deleteAllCompletedTasks(completedTasks)
-    closeConfirmDialog()
-  }, [closeConfirmDialog, completedTasks, deleteAllCompletedTasks])
-
+export function DeleteAllCompletedTasksConfirmDialog({
+  open,
+  numOfCompletedTasks,
+  onClose,
+  onDeleteTasksClick,
+}: Props) {
   return (
-    <Dialog open={opened} onClose={closeConfirmDialog}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>完了済みのタスクの削除</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -39,10 +31,10 @@ export function DeleteAllCompletedTasksConfirmDialog() {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" autoFocus onClick={handleCancel}>
+        <Button color="primary" autoFocus onClick={onClose}>
           キャンセル
         </Button>
-        <Button color="primary" onClick={handleDelete}>
+        <Button color="primary" onClick={onDeleteTasksClick}>
           削除
         </Button>
       </DialogActions>

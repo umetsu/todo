@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react'
-import { useUser } from '../../hooks/auth/useUser'
+import React from 'react'
 import {
   Avatar,
   Box,
@@ -14,23 +13,23 @@ import {
   Typography,
 } from '@material-ui/core'
 import { ExitToApp as ExitToAppIcon } from '@material-ui/icons'
-import { useSideDrawer } from '../../hooks/useSideDrawer'
+import { User } from '../../models/auth'
 
-export function SideDrawer() {
+interface Props {
+  open: boolean
+  user: User | null | undefined
+  onClose: () => void
+  onLogoutClick: () => void
+}
+
+export function SideDrawer({ open, user, onClose, onLogoutClick }: Props) {
   const classes = useStyles()
-  const { user, logout } = useUser()
-  const { opened, closeSideDrawer } = useSideDrawer()
-
-  const handleLogoutClick = useCallback(() => {
-    void logout()
-    closeSideDrawer()
-  }, [closeSideDrawer, logout])
 
   return (
     <Drawer
-      open={opened}
+      open={open}
       anchor={'left'}
-      onClose={closeSideDrawer}
+      onClose={onClose}
       ModalProps={{
         BackdropProps: {
           'aria-label': 'backdrop',
@@ -60,7 +59,7 @@ export function SideDrawer() {
         </Box>
         <Divider />
         <List>
-          <ListItem button onClick={handleLogoutClick}>
+          <ListItem button onClick={onLogoutClick}>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>

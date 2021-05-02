@@ -11,12 +11,16 @@ import {
 import React, { useCallback, useState } from 'react'
 import { TaskItem } from './TaskItem'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import { useTasks } from '../../hooks/useTasks'
 import { EmptyList } from './EmptyList'
+import { Task } from '../../models/tasks'
 
-export function TaskList() {
+interface Props {
+  uncompletedTasks: ReadonlyArray<Task>
+  completedTasks: ReadonlyArray<Task>
+}
+
+export function TaskList({ uncompletedTasks, completedTasks }: Props) {
   const classes = useStyles()
-  const { uncompletedTasks, completedTasks } = useTasks()
 
   const [openCompletedTasks, setOpenCompletedTasks] = useState(false)
   const handleCollapseToggleClick = useCallback(() => {

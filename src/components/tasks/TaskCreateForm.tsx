@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback } from 'react'
+import React, { FormEvent, useCallback, useState } from 'react'
 import {
   Button,
   createStyles,
@@ -7,41 +7,34 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useCreateTask } from '../../hooks/useCreateTask'
-import { useTaskCreateForm } from '../../hooks/useTaskCreateForm'
 
-export function TaskCreateForm() {
+interface Props {
+  open: boolean
+  onClose: () => void
+  onCreateTask: (taskName: string) => void
+}
+
+export function TaskCreateForm({ open, onClose, onCreateTask }: Props) {
   const classes = useStyles()
-  const { createTask } = useCreateTask()
-  const {
-    taskCreateFormOpened,
-    inputTaskName,
-    closeCreateTaskForm,
-    changeInputTaskName,
-  } = useTaskCreateForm()
+  const [inputTaskName, setInputTaskName] = useState('')
 
   const handleTaskNameChange = useCallback(
     (event) => {
-      changeInputTaskName(event.target.value)
+      setInputTaskName(event.target.value)
     },
-    [changeInputTaskName]
+    [setInputTaskName]
   )
 
   const handleSubmit = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      createTask(inputTaskName)
-      closeCreateTaskForm()
+      onCreateTask(inputTaskName)
     },
-    [closeCreateTaskForm, createTask, inputTaskName]
+    [inputTaskName, onCreateTask]
   )
 
   return (
-    <Drawer
-      anchor={'bottom'}
-      open={taskCreateFormOpened}
-      onClose={closeCreateTaskForm}
-    >
+    <Drawer anchor={'bottom'} open={open} onClose={onClose}>
       <form onSubmit={handleSubmit}>
         <div className={classes.container}>
           <InputBase
