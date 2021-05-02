@@ -8,31 +8,34 @@ import {
   TextField,
   Theme,
 } from '@material-ui/core'
-import { useTask } from '../../hooks/useTask'
-import { useUpdateTask } from '../../hooks/useUpdateTask'
+import { Task } from '../../models/tasks'
 
 interface Props {
-  taskId: string
+  task: Task
+  onCompletedChange: (completed: boolean) => void
+  onTaskNameChange: (taskName: string) => void
 }
 
-export function TaskEditForm({ taskId }: Props) {
-  const { task } = useTask(taskId)
-  const { changeCompleted, changeTaskName } = useUpdateTask(task)
+export function TaskEditForm({
+  task,
+  onCompletedChange,
+  onTaskNameChange,
+}: Props) {
   const classes = useStyles({ completed: task.completed })
 
   const completedLabel = task.completed ? '未完了に戻す' : '完了にする'
 
   const handleCheckedChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-      changeCompleted(checked)
+      onCompletedChange(checked)
     },
-    [changeCompleted]
+    [onCompletedChange]
   )
 
-  const onTextChange = (
+  const handleTextChange = (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    changeTaskName(event.target.value)
+    onTaskNameChange(event.target.value)
   }
 
   return (
@@ -49,7 +52,7 @@ export function TaskEditForm({ taskId }: Props) {
         inputProps={{
           className: classes.taskText,
         }}
-        onChange={onTextChange}
+        onChange={handleTextChange}
       />
     </Box>
   )

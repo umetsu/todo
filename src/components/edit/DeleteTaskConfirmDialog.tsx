@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import {
   Button,
   Dialog,
@@ -7,33 +7,20 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
-import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
-import { useDeleteTask } from '../../hooks/useDeleteTask'
-import { useTask } from '../../hooks/useTask'
-import { useRouter } from 'next/router'
 
 interface Props {
-  taskId: string
+  open: boolean
+  onClose: () => void
+  onDeleteTask: () => void
 }
 
-export function DeleteTaskConfirmDialog({ taskId }: Props) {
-  const { task } = useTask(taskId)
-  const { deleteTask } = useDeleteTask()
-  const { opened, closeConfirmDialog } = useDeleteTaskConfirmDialog()
-  const router = useRouter()
-
-  const handleCancel = useCallback(() => {
-    closeConfirmDialog()
-  }, [closeConfirmDialog])
-
-  const handleDelete = useCallback(() => {
-    deleteTask(task)
-    closeConfirmDialog()
-    void router.replace('/')
-  }, [closeConfirmDialog, deleteTask, router, task])
-
+export function DeleteTaskConfirmDialog({
+  open,
+  onClose,
+  onDeleteTask,
+}: Props) {
   return (
-    <Dialog open={opened} onClose={closeConfirmDialog}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>タスクの削除</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -41,10 +28,10 @@ export function DeleteTaskConfirmDialog({ taskId }: Props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" autoFocus onClick={handleCancel}>
+        <Button color="primary" autoFocus onClick={onClose}>
           キャンセル
         </Button>
-        <Button color="primary" onClick={handleDelete}>
+        <Button color="primary" onClick={onDeleteTask}>
           削除
         </Button>
       </DialogActions>
