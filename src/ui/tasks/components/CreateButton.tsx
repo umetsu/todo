@@ -1,5 +1,5 @@
 import React from 'react'
-import { Fab, makeStyles, Zoom } from '@material-ui/core'
+import { createStyles, Fab, makeStyles, Zoom } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 
 interface Props {
@@ -23,13 +23,15 @@ export function CreateButton({ onClick }: Props) {
   )
 }
 
-const useStyles = makeStyles(() => ({
-  fab: {
-    // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    position: 'absolute' as 'absolute',
-    top: '-30px',
-    left: 0,
-    right: 0,
-    margin: '0 auto',
-  },
-}))
+const useStyles = makeStyles(() =>
+  createStyles({
+    fab: {
+      // eslint-disable-next-line @typescript-eslint/prefer-as-const
+      position: 'absolute' as 'absolute',
+      top: '-30px',
+      left: 0,
+      right: 0,
+      margin: '0 auto',
+    },
+  })
+)

@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Avatar,
   Box,
+  createStyles,
   Divider,
   Drawer,
   List,
@@ -71,21 +72,25 @@ export function SideDrawer({ open, user, onClose, onLogoutClick }: Props) {
   )
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  drawerContent: {
-    width: '260px',
-  },
-  profile: {
-    padding: theme.spacing(2),
-  },
-  avatar: {
-    width: theme.spacing(14),
-    height: theme.spacing(14),
-    margin: `0 auto`,
-  },
-  userName: {
-    marginTop: theme.spacing(2),
-    textAlign: 'center',
-    overflowWrap: 'break-word',
-  },
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    drawerContent: {
+      width: '260px',
+    },
+    profile: {
+      padding: theme.spacing(2),
+    },
+    avatar: {
+      width: theme.spacing(14),
+      height: theme.spacing(14),
+      margin: `0 auto`,
+    },
+    userName: {
+      marginTop: theme.spacing(2),
+      // eslint-disable-next-line @typescript-eslint/prefer-as-const
+      textAlign: 'center' as 'center',
+      // eslint-disable-next-line @typescript-eslint/prefer-as-const
+      overflowWrap: 'break-word' as 'break-word',
+    },
+  })
+)

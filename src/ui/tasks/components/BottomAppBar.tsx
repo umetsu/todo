@@ -1,4 +1,10 @@
-import { AppBar, IconButton, makeStyles, Toolbar } from '@material-ui/core'
+import {
+  AppBar,
+  createStyles,
+  IconButton,
+  makeStyles,
+  Toolbar,
+} from '@material-ui/core'
 import React from 'react'
 import { CreateButton } from './CreateButton'
 import { Delete as DeleteIcon, Menu as MenuIcon } from '@material-ui/icons'
@@ -45,8 +51,10 @@ export function BottomAppBar({
   )
 }
 
-const useStyles = makeStyles(() => ({
-  space: {
-    flexGrow: 1,
-  },
-}))
+const useStyles = makeStyles(() =>
+  createStyles({
+    space: {
+      flexGrow: 1,
+    },
+  })
+)
