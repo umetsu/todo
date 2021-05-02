@@ -1,30 +1,33 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   Box,
   Container,
   createStyles,
+  IconButton,
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { FullPageSpinner } from '../../components/FullPageSpinner'
-import { TaskEditForm } from '../../components/TaskEditForm'
-import { ApplicationBar } from '../../components/ApplicationBar'
-import { DeleteTaskConfirmDialog } from '../../components/DeleteTaskConfirmDialog'
-import { ErrorFallback } from '../../components/ErrorFallback'
+import { FullPageSpinner } from '../../ui/common/components/FullPageSpinner'
+import { TaskEditForm } from '../../ui/edit/components/TaskEditForm'
+import { ApplicationBar } from '../../ui/common/components/ApplicationBar'
+import { DeleteTaskConfirmDialog } from '../../ui/edit/components/DeleteTaskConfirmDialog'
+import { ErrorFallback } from '../../ui/common/components/ErrorFallback'
+import { Delete as DeleteIcon } from '@material-ui/icons'
+import { useDeleteTaskConfirmDialog } from '../../ui/edit/hooks/useDeleteTaskConfirmDialog'
+import { useTask } from '../../ui/edit/hooks/useTask'
+import { useDeleteTask } from '../../ui/edit/hooks/useDeleteTask'
+import { useUpdateTask } from '../../ui/edit/hooks/useUpdateTask'
 
-export default function EditPage() {
-  const classes = useStyles()
+export default function EditPageWithProviders() {
   const router = useRouter()
-  const { taskId: taskIdQuery } = router.query
+  const { taskId } = router.query
 
-  if (!taskIdQuery) {
+  if (!taskId) {
     void router.replace('/')
     return <></>
   }
-
-  const taskId = taskIdQuery as string
 
   return (
     <ErrorBoundary
@@ -32,15 +35,64 @@ export default function EditPage() {
       onError={console.error}
     >
       <React.Suspense fallback={<FullPageSpinner />}>
-        <Box display={'flex'} flexDirection={'column'}>
-          <ApplicationBar />
-          <Container maxWidth={'md'} className={classes.container}>
-            <TaskEditForm taskId={taskId} />
-          </Container>
-        </Box>
-        <DeleteTaskConfirmDialog taskId={taskId} />
+        <EditPage taskId={taskId as string} />
       </React.Suspense>
     </ErrorBoundary>
+  )
+}
+
+interface Props {
+  taskId: string
+}
+
+function EditPage({ taskId }: Props) {
+  const classes = useStyles()
+  const router = useRouter()
+  const { task } = useTask(taskId)
+  const { changeCompleted, changeTaskName } = useUpdateTask(task)
+  const { deleteTask } = useDeleteTask()
+  const {
+    opened,
+    openConfirmDialog,
+    closeConfirmDialog,
+  } = useDeleteTaskConfirmDialog()
+
+  const handleDeleteTask = useCallback(() => {
+    deleteTask(task)
+    closeConfirmDialog()
+    void router.replace('/')
+  }, [closeConfirmDialog, deleteTask, router, task])
+
+  return (
+    <>
+      <Box display={'flex'} flexDirection={'column'}>
+        <ApplicationBar
+          showBackButton
+          renderAction={() => (
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label={'delete-task'}
+              onClick={openConfirmDialog}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        />
+        <Container maxWidth={'md'} className={classes.container}>
+          <TaskEditForm
+            task={task}
+            onCompletedChange={changeCompleted}
+            onTaskNameChange={changeTaskName}
+          />
+        </Container>
+      </Box>
+      <DeleteTaskConfirmDialog
+        open={opened}
+        onClose={closeConfirmDialog}
+        onDeleteTask={handleDeleteTask}
+      />
+    </>
   )
 }
 

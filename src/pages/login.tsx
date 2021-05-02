@@ -3,7 +3,13 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import * as firebaseui from 'firebaseui'
 import firebase from '../firebase'
 import { Cat } from 'react-kawaii'
-import { Box, makeStyles, Theme, Typography } from '@material-ui/core'
+import {
+  Box,
+  createStyles,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core'
 
 const uiConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -32,9 +38,11 @@ export default function LoginPage() {
   )
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  box: {
-    height: '100%',
-    padding: theme.spacing(2),
-  },
-}))
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    box: {
+      height: '100%',
+      padding: theme.spacing(2),
+    },
+  })
+)

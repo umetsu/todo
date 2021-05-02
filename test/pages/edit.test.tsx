@@ -10,6 +10,7 @@ import EditPage from '../../src/pages/edit/[taskId]'
 import { mocked } from 'ts-jest/utils'
 import { deleteTasks, fetchTask, updateTask } from '../../src/firebase/database'
 import { mockSubscribeUser, mockUseRouter } from '../utils/mocks'
+import { Task } from '../../src/ui/edit/models'
 
 jest.mock('next/router')
 jest.mock('../../src/firebase/auth')
@@ -36,7 +37,7 @@ async function renderEditPage({ uid, taskId }: RenderOptions) {
 
 test('編集ページの描画とタスクの編集', async () => {
   const uid = '1234'
-  const task = { id: '1', name: 'task1', completed: false }
+  const task: Task = { id: '1', name: 'task1', completed: false }
   const completedTask = { ...task, completed: true }
 
   mocked(fetchTask)
@@ -82,7 +83,7 @@ test('編集ページの描画とタスクの編集', async () => {
 
 test('タスクの削除', async () => {
   const uid = '1234'
-  const task = { id: '1', name: 'task1', completed: false }
+  const task: Task = { id: '1', name: 'task1', completed: false }
 
   mocked(fetchTask).mockResolvedValueOnce(task)
 

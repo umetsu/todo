@@ -5,7 +5,7 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react'
 import React from 'react'
-import { AppProviders } from '../../src/components/AppProviders'
+import { AppProviders } from '../../src/ui/common/components/AppProviders'
 import { createQueryClient } from '../../src/utils/createQueryClient'
 
 // RenderOptionsでもらうようにするか悩んだが、今の所テスト側でreact-queryのことを意識する必要無いのでここで定義することにした
