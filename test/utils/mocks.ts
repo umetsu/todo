@@ -39,5 +39,6 @@ export function mockUseRouter({
     pathname: pathname ?? '',
     query: query ?? {},
     asPath: '',
+    replace: jest.fn,
   } as any)
 }
