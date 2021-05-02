@@ -27,6 +27,9 @@ export async function fetchAllTasks(
 export async function fetchTask(uid: string, taskId: string): Promise<Task> {
   const snapshot = await firebase.database().ref(taskPath(uid, taskId)).get()
   const v = (snapshot.val() ?? {}) as { name: string; completed: boolean }
+  if (Object.keys(v).length === 0) {
+    throw new Error('タスクのデータを取得できませんでした')
+  }
   return {
     ...v,
     id: taskId,
