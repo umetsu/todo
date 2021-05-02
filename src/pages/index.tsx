@@ -15,13 +15,14 @@ import { TaskCreateForm } from '../components/TaskCreateForm'
 import { BottomAppBar } from '../components/BottomAppBar'
 import { SideDrawer } from '../components/SideDrawer'
 import { DeleteAllCompletedTasksConfirmDialog } from '../components/DeleteAllCompletedTasksConfirmDialog'
+import { ErrorFallback } from '../components/ErrorFallback'
 
 export default function TopPage() {
   const classes = useStyles()
 
   return (
     <ErrorBoundary
-      fallback={<div>エラーが発生しました</div>}
+      fallbackRender={({ error }) => <ErrorFallback message={error.message} />}
       onError={console.error}
     >
       <React.Suspense fallback={<FullPageSpinner />}>
