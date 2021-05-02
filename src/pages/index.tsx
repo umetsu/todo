@@ -1,14 +1,6 @@
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import {
-  AppBar,
-  Box,
-  Container,
-  createStyles,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from '@material-ui/core'
+import { Box, Container, createStyles, makeStyles } from '@material-ui/core'
 import { FullPageSpinner } from '../components/common/FullPageSpinner'
 import { TaskList } from '../components/tasks/TaskList'
 import { TaskCreateForm } from '../components/tasks/TaskCreateForm'
@@ -16,6 +8,7 @@ import { BottomAppBar } from '../components/tasks/BottomAppBar'
 import { SideDrawer } from '../components/tasks/SideDrawer'
 import { DeleteAllCompletedTasksConfirmDialog } from '../components/tasks/DeleteAllCompletedTasksConfirmDialog'
 import { ErrorFallback } from '../components/common/ErrorFallback'
+import { ApplicationBar } from '../components/common/ApplicationBar'
 
 export default function TopPage() {
   const classes = useStyles()
@@ -27,13 +20,7 @@ export default function TopPage() {
     >
       <React.Suspense fallback={<FullPageSpinner />}>
         <Box display={'flex'} flexDirection={'column'} className={classes.box}>
-          <AppBar position="static" color={'transparent'} elevation={0}>
-            <Toolbar>
-              <Typography variant={'h6'} noWrap>
-                Todo
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <ApplicationBar title={'Todo'} />
           <Container maxWidth={'md'} className={classes.container}>
             <TaskList />
           </Container>

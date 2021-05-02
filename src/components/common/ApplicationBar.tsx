@@ -1,43 +1,41 @@
-import React, { useCallback } from 'react'
+import React, { ReactElement } from 'react'
 import {
   AppBar,
   createStyles,
   IconButton,
   makeStyles,
   Toolbar,
+  Typography,
 } from '@material-ui/core'
 import Link from 'next/link'
-import {
-  ArrowBack as ArrowBackIcon,
-  Delete as DeleteIcon,
-} from '@material-ui/icons'
-import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
+import { ArrowBack as ArrowBackIcon } from '@material-ui/icons'
 
-export function ApplicationBar() {
+interface Props {
+  title?: string
+  showBackButton?: boolean
+  renderAction?: () => ReactElement
+}
+
+export function ApplicationBar({ title, showBackButton, renderAction }: Props) {
   const classes = useStyles()
-  const { openConfirmDialog } = useDeleteTaskConfirmDialog()
-
-  const handleDelete = useCallback(() => {
-    openConfirmDialog()
-  }, [openConfirmDialog])
 
   return (
     <AppBar position="static" color={'transparent'} elevation={0}>
       <Toolbar>
-        <Link href={'/'}>
-          <IconButton edge="start" color="inherit" aria-label={'back-button'}>
-            <ArrowBackIcon />
-          </IconButton>
-        </Link>
+        {showBackButton && (
+          <Link href={'/'}>
+            <IconButton edge="start" color="inherit" aria-label={'back-button'}>
+              <ArrowBackIcon />
+            </IconButton>
+          </Link>
+        )}
+        {title && (
+          <Typography variant={'h6'} noWrap>
+            {title}
+          </Typography>
+        )}
         <div className={classes.space} />
-        <IconButton
-          edge="end"
-          color="inherit"
-          aria-label={'delete-task'}
-          onClick={handleDelete}
-        >
-          <DeleteIcon />
-        </IconButton>
+        {renderAction?.()}
       </Toolbar>
     </AppBar>
   )

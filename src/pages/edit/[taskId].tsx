@@ -5,6 +5,7 @@ import {
   Box,
   Container,
   createStyles,
+  IconButton,
   makeStyles,
   Theme,
 } from '@material-ui/core'
@@ -13,11 +14,14 @@ import { TaskEditForm } from '../../components/edit/TaskEditForm'
 import { ApplicationBar } from '../../components/common/ApplicationBar'
 import { DeleteTaskConfirmDialog } from '../../components/edit/DeleteTaskConfirmDialog'
 import { ErrorFallback } from '../../components/common/ErrorFallback'
+import { Delete as DeleteIcon } from '@material-ui/icons'
+import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
 
 export default function EditPage() {
   const classes = useStyles()
   const router = useRouter()
   const { taskId: taskIdQuery } = router.query
+  const { openConfirmDialog } = useDeleteTaskConfirmDialog()
 
   if (!taskIdQuery) {
     void router.replace('/')
@@ -33,7 +37,19 @@ export default function EditPage() {
     >
       <React.Suspense fallback={<FullPageSpinner />}>
         <Box display={'flex'} flexDirection={'column'}>
-          <ApplicationBar />
+          <ApplicationBar
+            showBackButton
+            renderAction={() => (
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label={'delete-task'}
+                onClick={openConfirmDialog}
+              >
+                <DeleteIcon />
+              </IconButton>
+            )}
+          />
           <Container maxWidth={'md'} className={classes.container}>
             <TaskEditForm taskId={taskId} />
           </Container>
