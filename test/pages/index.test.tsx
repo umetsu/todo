@@ -45,8 +45,7 @@ test('トップページの描画', async () => {
     { id: '2', name: 'task2', completed: false },
     { id: '3', name: 'task3', completed: true },
   ]
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks.mockResolvedValue(
+  const mockedFetchAllTasks = mocked(fetchAllTasks).mockResolvedValueOnce(
     Object.fromEntries(
       tasks.map<[string, Task]>((t) => [t.id, t])
     )
@@ -91,13 +90,11 @@ test('タスクの追加', async () => {
   const uid = '123'
   const newTask: Task = { id: 'test-id', name: 'new task', completed: false }
 
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks
-    .mockResolvedValue({ 'test-id': newTask })
+  mocked(fetchAllTasks)
     .mockResolvedValueOnce({})
+    .mockResolvedValueOnce({ 'test-id': newTask })
 
-  const mockedCreateTask = mocked(createTask)
-  mockedCreateTask.mockResolvedValue(newTask)
+  const mockedCreateTask = mocked(createTask).mockResolvedValueOnce(newTask)
 
   await renderTopPage({ uid })
 
@@ -122,15 +119,13 @@ test('完了状態の切り替え', async () => {
   const uid = '456'
   const task = { id: '1', name: 'task1', completed: false }
 
-  const mockedFetchAllTasks = mocked(fetchAllTasks)
-  mockedFetchAllTasks
-    .mockResolvedValue({
+  mocked(fetchAllTasks)
+    .mockResolvedValueOnce({ [task.id]: task })
+    .mockResolvedValueOnce({
       [task.id]: { ...task, completed: true },
     })
-    .mockResolvedValueOnce({ [task.id]: task })
 
-  const mockedUpdateTask = mocked(updateTask)
-  mockedUpdateTask.mockResolvedValue({
+  const mockedUpdateTask = mocked(updateTask).mockResolvedValueOnce({
     ...task,
     completed: true,
   })
