@@ -9,9 +9,7 @@ export function EmptyList() {
       flexDirection={'column'}
       alignItems={'center'}
       justifyContent={'center'}
-      style={{
-        height: '100%',
-      }}
+      height={'100%'}
     >
       <Cat size={140} mood={'excited'} />
       <Typography>タスクが空のようです</Typography>

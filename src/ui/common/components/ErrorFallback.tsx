@@ -13,9 +13,7 @@ export function ErrorFallback({ message }: Props) {
       flexDirection={'column'}
       alignItems={'center'}
       justifyContent={'center'}
-      style={{
-        height: '100%',
-      }}
+      height={'100%'}
     >
       <Ghost size={140} mood={'ko'} />
       <Typography>エラーが発生しました</Typography>
