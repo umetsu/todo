@@ -11,7 +11,7 @@ import {
   ArrowBack as ArrowBackIcon,
   Delete as DeleteIcon,
 } from '@material-ui/icons'
-import { useDeleteTaskConfirmDialog } from '../hooks/useDeleteTaskConfirmDialog'
+import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
 
 export function ApplicationBar() {
   const classes = useStyles()

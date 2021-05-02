@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useUser } from '../hooks/auth/useUser'
+import { useUser } from '../../hooks/auth/useUser'
 import {
   Avatar,
   Box,
@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { ExitToApp as ExitToAppIcon } from '@material-ui/icons'
-import { useSideDrawer } from '../hooks/useSideDrawer'
+import { useSideDrawer } from '../../hooks/useSideDrawer'
 
 export function SideDrawer() {
   const classes = useStyles()

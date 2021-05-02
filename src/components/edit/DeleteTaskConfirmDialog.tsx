@@ -7,9 +7,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
-import { useDeleteTaskConfirmDialog } from '../hooks/useDeleteTaskConfirmDialog'
-import { useDeleteTask } from '../hooks/useDeleteTask'
-import { useTask } from '../hooks/useTask'
+import { useDeleteTaskConfirmDialog } from '../../hooks/useDeleteTaskConfirmDialog'
+import { useDeleteTask } from '../../hooks/useDeleteTask'
+import { useTask } from '../../hooks/useTask'
 import { useRouter } from 'next/router'
 
 interface Props {

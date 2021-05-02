@@ -9,13 +9,13 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import { FullPageSpinner } from '../components/FullPageSpinner'
-import { TaskList } from '../components/TaskList'
-import { TaskCreateForm } from '../components/TaskCreateForm'
-import { BottomAppBar } from '../components/BottomAppBar'
-import { SideDrawer } from '../components/SideDrawer'
-import { DeleteAllCompletedTasksConfirmDialog } from '../components/DeleteAllCompletedTasksConfirmDialog'
-import { ErrorFallback } from '../components/ErrorFallback'
+import { FullPageSpinner } from '../components/common/FullPageSpinner'
+import { TaskList } from '../components/tasks/TaskList'
+import { TaskCreateForm } from '../components/tasks/TaskCreateForm'
+import { BottomAppBar } from '../components/tasks/BottomAppBar'
+import { SideDrawer } from '../components/tasks/SideDrawer'
+import { DeleteAllCompletedTasksConfirmDialog } from '../components/tasks/DeleteAllCompletedTasksConfirmDialog'
+import { ErrorFallback } from '../components/common/ErrorFallback'
 
 export default function TopPage() {
   const classes = useStyles()

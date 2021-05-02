@@ -2,9 +2,9 @@ import { AppBar, IconButton, makeStyles, Toolbar } from '@material-ui/core'
 import React from 'react'
 import { CreateButton } from './CreateButton'
 import { Delete as DeleteIcon, Menu as MenuIcon } from '@material-ui/icons'
-import { useSideDrawer } from '../hooks/useSideDrawer'
-import { useDeleteAllCompletedTasksConfirmDialog } from '../hooks/useDeleteAllCompletedTasksConfirmDialog'
-import { useTasks } from '../hooks/useTasks'
+import { useSideDrawer } from '../../hooks/useSideDrawer'
+import { useDeleteAllCompletedTasksConfirmDialog } from '../../hooks/useDeleteAllCompletedTasksConfirmDialog'
+import { useTasks } from '../../hooks/useTasks'
 
 export function BottomAppBar() {
   const classes = useStyles()

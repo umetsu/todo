@@ -8,11 +8,11 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { FullPageSpinner } from '../../components/FullPageSpinner'
-import { TaskEditForm } from '../../components/TaskEditForm'
-import { ApplicationBar } from '../../components/ApplicationBar'
-import { DeleteTaskConfirmDialog } from '../../components/DeleteTaskConfirmDialog'
-import { ErrorFallback } from '../../components/ErrorFallback'
+import { FullPageSpinner } from '../../components/common/FullPageSpinner'
+import { TaskEditForm } from '../../components/edit/TaskEditForm'
+import { ApplicationBar } from '../../components/common/ApplicationBar'
+import { DeleteTaskConfirmDialog } from '../../components/edit/DeleteTaskConfirmDialog'
+import { ErrorFallback } from '../../components/common/ErrorFallback'
 
 export default function EditPage() {
   const classes = useStyles()

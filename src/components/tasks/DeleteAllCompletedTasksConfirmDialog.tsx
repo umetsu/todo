@@ -7,9 +7,9 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@material-ui/core'
-import { useDeleteAllCompletedTasks } from '../hooks/useDeleteAllCompletedTasks'
-import { useDeleteAllCompletedTasksConfirmDialog } from '../hooks/useDeleteAllCompletedTasksConfirmDialog'
-import { useTasks } from '../hooks/useTasks'
+import { useDeleteAllCompletedTasks } from '../../hooks/useDeleteAllCompletedTasks'
+import { useDeleteAllCompletedTasksConfirmDialog } from '../../hooks/useDeleteAllCompletedTasksConfirmDialog'
+import { useTasks } from '../../hooks/useTasks'
 
 export function DeleteAllCompletedTasksConfirmDialog() {
   const { completedTasks } = useTasks()

@@ -7,8 +7,8 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import { useCreateTask } from '../hooks/useCreateTask'
-import { useTaskCreateForm } from '../hooks/useTaskCreateForm'
+import { useCreateTask } from '../../hooks/useCreateTask'
+import { useTaskCreateForm } from '../../hooks/useTaskCreateForm'
 
 export function TaskCreateForm() {
   const classes = useStyles()

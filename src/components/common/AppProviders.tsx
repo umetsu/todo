@@ -1,6 +1,6 @@
 import React from 'react'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
-import { theme } from '../theme'
+import { theme } from '../../theme'
 import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
