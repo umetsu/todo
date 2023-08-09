@@ -1,6 +1,6 @@
 # Todoアプリ
 
-モバイルのブラウザ向けのTodoアプリです。
+モバイルブラウザ向けのTodoアプリです。
 
 - https://todo-beta-liard.vercel.app
 
